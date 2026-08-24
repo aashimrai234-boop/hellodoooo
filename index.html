@@ -234,9 +234,19 @@ function openCheckout(){
   $('#checkoutForm').onsubmit=submitSupabaseOrder;
 }
 
+function supabaseErrorText(err){
+  if(!err) return 'Unknown Supabase error.';
+  const parts=[err.message,err.details,err.hint,err.code].filter(Boolean);
+  return parts.length?parts.join(' | '):String(err);
+}
+
 async function submitSupabaseOrder(event){
   event.preventDefault();
-  if(!supabaseReady()){toast('Supabase is not connected. Open the browser console and check the Supabase script/configuration.','bad');return}
+  if(!supabaseReady()){
+    toast('Supabase is not connected. Check your project URL, publishable key, and script.', 'bad');
+    return;
+  }
+
   const name=$('#customerName').value.trim();
   const email=$('#customerEmail').value.trim();
   const phone=$('#customerPhone').value.trim();
@@ -244,19 +254,78 @@ async function submitSupabaseOrder(event){
   if(name.length<2){toast('Enter your full name','bad');return}
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){toast('Enter a valid email address','bad');return}
   if(address.length<5){toast('Enter a delivery address','bad');return}
-  const items=cartItemsSnapshot(); if(!items.length){toast('Your cart is empty','bad');closeLayers();return}
+
+  const items=cartItemsSnapshot();
+  if(!items.length){toast('Your cart is empty','bad');closeLayers();return}
+
   const totals=cartTotals();
-  const btn=$('#placeOrderBtn');btn.disabled=true;btn.textContent='Saving order...';
+  const btn=$('#placeOrderBtn');
+  btn.disabled=true;
+  btn.textContent='Saving order...';
+
   try{
-    const {data:order,error:orderError}=await supabaseClient.from('orders').insert({customer_name:name,email,phone:phone||null,address,total:Number(totals.total.toFixed(2)),status:'pending'}).select('id').single();
-    if(orderError) throw orderError;
-    const orderItems=items.map(i=>({order_id:order.id,product_id:i.id,product_name:i.name,quantity:i.qty,price:i.price}));
+    // Insert the parent order first. The select() is intentional because we need
+    // the generated order id for the order_items rows.
+    const {data:order,error:orderError}=await supabaseClient
+      .from('orders')
+      .insert({
+        customer_name:name,
+        email,
+        phone:phone||null,
+        address,
+        total:Number(totals.total.toFixed(2)),
+        status:'pending'
+      })
+      .select('id')
+      .single();
+
+    if(orderError) throw new Error('ORDERS INSERT: '+supabaseErrorText(orderError));
+    if(!order?.id) throw new Error('ORDERS INSERT: Supabase did not return the new order id. Your orders table needs an id column with a default/generated value and a SELECT policy for the inserted row.');
+
+    const orderItems=items.map(i=>({
+      order_id:order.id,
+      product_id:i.id,
+      product_name:i.name,
+      quantity:i.qty,
+      price:Number(i.price)
+    }));
+
     const {error:itemError}=await supabaseClient.from('order_items').insert(orderItems);
-    if(itemError){await supabaseClient.from('orders').delete().eq('id',order.id);throw itemError}
-    state.cart=[];save();renderCart();renderCounts();
-    $('#checkoutContent').innerHTML=`<div class="success-box"><div class="success-icon">✓</div><div class="eyebrow">ORDER SAVED</div><h2 style="margin:12px 0 8px">Thank you, ${name.split(' ')[0]||'customer'}.</h2><p style="color:var(--muted);line-height:1.7">Your order has been recorded successfully.</p><div class="order-summary"><div class="order-summary-row"><span>Order ID</span><strong>NEX-${String(order.id).slice(0,8).toUpperCase()}</strong></div><div class="order-summary-row total"><span>Total</span><strong>${money(totals.total)}</strong></div></div><button class="btn btn-primary order-submit" id="doneOrder">Back to Store ↗</button></div>`;
+    if(itemError){
+      console.error('ORDER_ITEMS INSERT ERROR:',itemError);
+      toast('Order saved, but products could not be attached. '+supabaseErrorText(itemError),'bad');
+      btn.disabled=false;
+      btn.textContent='Place Order ↗';
+      return;
+    }
+
+    state.cart=[];
+    save();
+    renderCart();
+    renderCounts();
+
+    $('#checkoutContent').innerHTML=`<div class="success-box">
+      <div class="success-icon">✓</div>
+      <div class="eyebrow">ORDER SAVED</div>
+      <h2 style="margin:12px 0 8px">Thank you, ${name.split(' ')[0]||'customer'}.</h2>
+      <p style="color:var(--muted);line-height:1.7">Your order has been recorded successfully.</p>
+      <div class="order-summary">
+        <div class="order-summary-row"><span>Order ID</span><strong>NEX-${String(order.id).slice(0,8).toUpperCase()}</strong></div>
+        <div class="order-summary-row total"><span>Total</span><strong>${money(totals.total)}</strong></div>
+      </div>
+      <button class="btn btn-primary order-submit" id="doneOrder">Back to Store ↗</button>
+    </div>`;
     $('#doneOrder').onclick=()=>closeLayers();
-  }catch(err){console.error('Supabase order error:',err);toast('Could not save the order. Check your Supabase table and RLS policies.','bad');btn.disabled=false;btn.textContent='Place Order ↗'}
+
+  }catch(err){
+    console.error('NEXORA SUPABASE ORDER ERROR:',err);
+    const message=supabaseErrorText(err);
+    toast(message.slice(0,240),'bad');
+    const note=$('.config-note');
+    if(note) note.innerHTML='<strong>Database error:</strong> '+message.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    btn.disabled=false;
+    btn.textContent='Place Order ↗';
+  }
 }
 
 const testimonials=[['“NEXORA feels like shopping got redesigned from the ground up — every interaction is fast, thoughtful and surprisingly fun.”','Maya Chen','Singapore · Verified customer · ★★★★★','photo-1494790108377-be9c29b29330'],['“The product discovery is clean, the details are useful, and the checkout flow feels genuinely premium.”','Ethan Brooks','New York · Verified customer · ★★★★★','photo-1500648767791-00dcc994a43e'],['“I came for the headphones and stayed for the design. NEXORA makes online shopping feel like a product experience.”','Aarav Sharma','Kathmandu · Verified customer · ★★★★★','photo-1507003211169-0a1dd7228f2d']];let ti=0;function showTest(){const t=testimonials[ti];$('#quote').textContent=t[0];$('#personName').textContent=t[1];$('#personMeta').textContent=t[2];$('#personImg').src=IMG(t[3],200)}$('#prevTest').onclick=()=>{ti=(ti-1+testimonials.length)%testimonials.length;showTest()};$('#nextTest').onclick=()=>{ti=(ti+1)%testimonials.length;showTest()};setInterval(()=>$('#nextTest').click(),6500);
