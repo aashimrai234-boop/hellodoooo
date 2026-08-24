@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="NEXORA — Discover. Shop. Experience. Premium futuristic e-commerce.">
+  <meta name="theme-color" content="#0a0a0d">
+  <title>NEXORA — Discover. Shop. Experience.</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#07080b; --bg2:#0d1015; --surface:rgba(255,255,255,.055);
+      --surface-2:rgba(255,255,255,.08); --text:#f7f8fa; --muted:#9ca3af;
+      --line:rgba(255,255,255,.11); --accent:#8b7cff; --accent-2:#5ee7ff;
+      --danger:#ff6b7a; --success:#63e6a1; --shadow:0 24px 70px rgba(0,0,0,.36);
+      --radius:24px; --max:1220px;
+    }
+    [data-theme="light"]{
+      --bg:#f4f6f8; --bg2:#fff; --surface:rgba(0,0,0,.045); --surface-2:rgba(0,0,0,.07);
+      --text:#101319; --muted:#667085; --line:rgba(16,19,25,.12);
+      --shadow:0 24px 70px rgba(25,35,55,.14);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:Inter,system-ui,sans-serif;background:radial-gradient(circle at 20% 0%,rgba(139,124,255,.12),transparent 28%),var(--bg);color:var(--text);overflow-x:hidden}
+    body.modal-open{overflow:hidden}
+    a{text-decoration:none;color:inherit}
+    button,input,select{font:inherit}
+    button{border:0;background:none;color:inherit;cursor:pointer}
+    img{display:block;max-width:100%}
+    .container{width:min(var(--max),calc(100% - 40px));margin:auto}
+    .eyebrow{font-size:.76rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+    h1,h2,h3,h4{font-family:"Space Grotesk",Inter,sans-serif;line-height:1.02}
+    h2{font-size:clamp(2.1rem,5vw,4.5rem);letter-spacing:-.055em}
+    .section{padding:100px 0;position:relative}
+    .reveal{opacity:0;transform:translateY(36px);transition:opacity .8s ease,transform .8s cubic-bezier(.16,1,.3,1)}
+    .reveal-left{opacity:0;transform:translateX(-42px);transition:opacity .8s ease,transform .8s cubic-bezier(.16,1,.3,1)}
+    .reveal-right{opacity:0;transform:translateX(42px);transition:opacity .8s ease,transform .8s cubic-bezier(.16,1,.3,1)}
+    .revealed{opacity:1!important;transform:none!important}
+    .grid-bg{position:absolute;inset:0;pointer-events:none;opacity:.28;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:80px 80px;mask-image:linear-gradient(to bottom,black,transparent 85%)}
+    .noise{position:fixed;inset:0;pointer-events:none;opacity:.035;z-index:100;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.38'/%3E%3C/svg%3E")}
+
+    /* top bars + nav */
+    .progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));z-index:1100;box-shadow:0 0 18px rgba(94,231,255,.6)}
+    .announce{position:fixed;top:3px;left:0;right:0;z-index:1000;text-align:center;padding:8px 16px;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;background:rgba(7,8,11,.75);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);color:var(--muted)}
+    [data-theme="light"] .announce{background:rgba(255,255,255,.8)}
+    .announce span{display:inline-block;animation:marquee 14s linear infinite}
+    @keyframes marquee{from{transform:translateX(-2%)}to{transform:translateX(2%)}}
+    .nav{position:fixed;top:36px;left:0;right:0;z-index:900;padding:13px 18px;transition:.45s}
+    .nav.scrolled{top:10px}
+    .nav-inner{max-width:var(--max);margin:auto;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:13px 16px;border:1px solid transparent;border-radius:20px;transition:.4s}
+    .nav.scrolled .nav-inner{background:rgba(9,10,14,.68);border-color:var(--line);backdrop-filter:blur(20px);box-shadow:var(--shadow)}
+    [data-theme="light"] .nav.scrolled .nav-inner{background:rgba(255,255,255,.72)}
+    .logo{font-family:"Space Grotesk";font-weight:800;letter-spacing:.1em;font-size:1.05rem;display:flex;align-items:center;gap:9px;white-space:nowrap}
+    .logo-mark{width:26px;height:26px;border-radius:9px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#071017;font-size:.75rem;box-shadow:0 0 22px rgba(139,124,255,.3)}
+    .nav-links{display:flex;gap:24px;color:var(--muted);font-size:.9rem}
+    .nav-links a{position:relative}
+    .nav-links a:after{content:"";position:absolute;left:0;bottom:-7px;width:100%;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent-2));transform:scaleX(0);transform-origin:left;transition:.3s}
+    .nav-links a:hover{color:var(--text)} .nav-links a:hover:after{transform:scaleX(1)}
+    .nav-actions{display:flex;align-items:center;gap:7px}
+    .icon-btn{width:40px;height:40px;border:1px solid transparent;border-radius:13px;display:grid;place-items:center;position:relative;transition:.25s}
+    .icon-btn:hover{background:var(--surface);border-color:var(--line);transform:translateY(-2px)}
+    .icon-btn svg{width:19px;height:19px}
+    .count{position:absolute;top:-3px;right:-2px;min-width:18px;height:18px;border-radius:10px;padding:0 5px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#061016;font-size:.66rem;display:grid;place-items:center;font-weight:900}
+    .hamburger{display:none}
+
+    /* hero */
+    .hero{min-height:100vh;padding-top:160px;display:grid;place-items:center;position:relative;overflow:hidden}
+    .hero-glow{position:absolute;width:620px;height:620px;border-radius:50%;background:radial-gradient(circle,rgba(139,124,255,.28),transparent 65%);filter:blur(10px);transform:translate(var(--mx,0),var(--my,0))}
+    .hero-grid{position:absolute;inset:0}
+    .hero-content{position:relative;z-index:2;display:grid;grid-template-columns:1.08fr .92fr;gap:40px;align-items:center}
+    .hero-copy{max-width:720px}
+    .hero-copy .eyebrow{margin-bottom:20px}
+    .hero-title{font-size:clamp(4.5rem,10vw,9.3rem);letter-spacing:-.08em}
+    .hero-title span{display:block;background:linear-gradient(100deg,var(--text) 20%,#8b7cff 55%,#5ee7ff 88%);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 5s linear infinite}
+    @keyframes shine{to{background-position:200% center}}
+    .hero-sub{max-width:620px;color:var(--muted);font-size:clamp(1rem,1.7vw,1.25rem);line-height:1.7;margin:22px 0 30px}
+    .btn-row{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{padding:14px 19px;border:1px solid var(--line);border-radius:15px;display:inline-flex;align-items:center;gap:9px;font-weight:700;transition:.3s;position:relative;overflow:hidden}
+    .btn-primary{background:linear-gradient(135deg,var(--accent),#6c8dff);color:#fff;border-color:transparent;box-shadow:0 12px 35px rgba(110,105,255,.28)}
+    .btn-secondary{background:var(--surface)}
+    .btn:hover{transform:translateY(-3px);box-shadow:0 15px 35px rgba(0,0,0,.18)}
+    .hero-stage{min-height:560px;position:relative;perspective:1200px}
+    .hero-product{position:absolute;inset:10% 8% 5%;border-radius:36px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);transform:rotateY(-10deg) rotateX(5deg);transition:transform .25s ease;will-change:transform}
+    .hero-product img{width:100%;height:100%;object-fit:cover;filter:saturate(1.05)}
+    .hero-product:after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.13),transparent 35%,rgba(94,231,255,.05));mix-blend-mode:screen}
+    .float-card{position:absolute;padding:15px;border:1px solid var(--line);background:rgba(12,13,17,.64);backdrop-filter:blur(20px);border-radius:20px;box-shadow:var(--shadow);animation:float 5.5s ease-in-out infinite}
+    [data-theme="light"] .float-card{background:rgba(255,255,255,.72)}
+    .float-card.one{top:8%;left:0}.float-card.two{right:0;bottom:15%;animation-delay:-1.8s}.float-card.three{left:10%;bottom:2%;animation-delay:-3.2s}
+    .float-card .mini{font-size:.72rem;color:var(--muted)} .float-card strong{display:block;margin-top:4px;font-size:.93rem}
+    @keyframes float{50%{transform:translateY(-15px)}}
+    .scroll-hint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);font-size:.68rem;letter-spacing:.18em;color:var(--muted);display:flex;flex-direction:column;gap:8px;align-items:center}
+    .scroll-line{width:1px;height:52px;background:linear-gradient(var(--accent),transparent);animation:pulse 1.8s ease-in-out infinite}
+    @keyframes pulse{50%{transform:scaleY(.45);opacity:.4}}
+
+    /* section headings */
+    .section-head{display:flex;justify-content:space-between;align-items:end;gap:22px;margin-bottom:36px}
+    .section-head p{color:var(--muted);max-width:460px;line-height:1.6}
+
+    /* categories */
+    .category-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+    .category{height:260px;border-radius:22px;overflow:hidden;position:relative;border:1px solid var(--line);cursor:pointer}
+    .category img{width:100%;height:100%;object-fit:cover;transition:.65s cubic-bezier(.16,1,.3,1)}
+    .category:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.8),transparent 60%)}
+    .category-content{position:absolute;z-index:2;left:16px;right:16px;bottom:16px;transition:.4s}
+    .category-content span{font-size:.68rem;color:rgba(255,255,255,.72);text-transform:uppercase;letter-spacing:.12em}
+    .category h3{font-size:1.25rem;margin-top:6px;color:#fff}
+    .category .arrow{position:absolute;right:0;bottom:2px;opacity:0;transform:translateX(-8px);transition:.35s}
+    .category:hover img{transform:scale(1.1)} .category:hover .category-content{transform:translateY(-8px)} .category:hover .arrow{opacity:1;transform:none}
+
+    /* products */
+    .shop-bar{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-bottom:25px;flex-wrap:wrap}
+    .filters{display:flex;gap:8px;flex-wrap:wrap}
+    .chip,.select{border:1px solid var(--line);background:var(--surface);color:var(--muted);padding:10px 13px;border-radius:12px;font-size:.82rem}
+    .chip.active,.chip:hover{background:var(--text);color:var(--bg);border-color:var(--text)}
+    .select{outline:none}
+    .product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    .product-card{position:relative;background:linear-gradient(180deg,var(--surface),rgba(255,255,255,.025));border:1px solid var(--line);border-radius:22px;overflow:hidden;transition:.45s cubic-bezier(.16,1,.3,1);min-width:0}
+    .product-card:hover{transform:translateY(-8px);box-shadow:var(--shadow);border-color:rgba(139,124,255,.35)}
+    .product-media{position:relative;aspect-ratio:1/1;overflow:hidden;background:linear-gradient(145deg,#141820,#0b0d12)}
+    .product-media img{width:100%;height:100%;object-fit:cover;transition:.65s cubic-bezier(.16,1,.3,1)}
+    .product-card:hover .product-media img{transform:scale(1.07) rotate(.6deg)}
+    .badge{position:absolute;top:12px;left:12px;padding:6px 9px;border-radius:9px;font-size:.65rem;font-weight:800;background:rgba(6,7,10,.7);backdrop-filter:blur(10px);border:1px solid var(--line);z-index:3}
+    .heart{position:absolute;top:10px;right:10px;z-index:3;width:38px;height:38px;border-radius:12px;background:rgba(6,7,10,.55);backdrop-filter:blur(10px);display:grid;place-items:center;border:1px solid rgba(255,255,255,.12);transition:.3s}
+    .heart.active{color:#ff6c87;transform:scale(1.08)}
+    .quick{position:absolute;bottom:12px;left:12px;right:12px;z-index:4;padding:11px;border-radius:12px;background:rgba(8,9,12,.75);backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,.14);transform:translateY(12px);opacity:0;transition:.35s}
+    .product-card:hover .quick{opacity:1;transform:none}
+    .product-info{padding:15px}
+    .product-cat{font-size:.69rem;color:var(--muted);text-transform:uppercase;letter-spacing:.11em}
+    .product-name{font-size:1rem;margin:7px 0 11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .rating{display:flex;gap:5px;align-items:center;font-size:.76rem;margin-bottom:12px}.stars{letter-spacing:.04em}.rating span{color:var(--muted)}
+    .price-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+    .price{font-weight:800;font-size:1.06rem}.old-price{font-size:.78rem;color:var(--muted);text-decoration:line-through;margin-left:5px}
+    .add-cart{padding:9px 11px;border-radius:10px;background:var(--text);color:var(--bg);font-weight:800;font-size:.75rem;transition:.25s}.add-cart:hover{transform:scale(1.04)}
+    .empty{padding:50px 10px;text-align:center;color:var(--muted);grid-column:1/-1;border:1px dashed var(--line);border-radius:20px}
+
+    /* collections */
+    .collection-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:16px}
+    .collection{min-height:420px;position:relative;border-radius:26px;overflow:hidden;border:1px solid var(--line)}
+    .collection img{width:100%;height:100%;object-fit:cover;transition:.8s}
+    .collection:hover img{transform:scale(1.06)}
+    .collection:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.8),rgba(0,0,0,.08) 70%)}
+    .collection-content{position:absolute;left:28px;bottom:28px;right:28px;z-index:2;max-width:600px}.collection-content h3{font-size:2.5rem;color:#fff;margin:8px 0}.collection-content p{color:rgba(255,255,255,.74);line-height:1.6;max-width:520px}.collection-content .btn{margin-top:18px}
+    .collection.small{min-height:202px}.collection.small .collection-content h3{font-size:1.8rem}
+    .collection-stack{display:grid;grid-template-rows:1fr 1fr;gap:16px}
+
+    /* trending */
+    .carousel-wrap{position:relative;overflow:hidden}
+    .carousel{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:3px}
+    .carousel::-webkit-scrollbar{display:none}
+    .slide{flex:0 0 calc(25% - 12px);scroll-snap-align:start}
+    .carousel-buttons{display:flex;gap:8px}.carousel-buttons button{width:40px;height:40px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+
+    /* flash */
+    .flash{border:1px solid rgba(139,124,255,.3);border-radius:30px;overflow:hidden;position:relative;padding:55px;display:grid;grid-template-columns:1fr auto;align-items:center;background:radial-gradient(circle at 78% 20%,rgba(94,231,255,.12),transparent 28%),radial-gradient(circle at 30% 80%,rgba(139,124,255,.15),transparent 32%),var(--surface)}
+    .flash:before{content:"";position:absolute;width:260px;height:260px;border:1px solid rgba(255,255,255,.08);border-radius:50%;right:10%;top:-110px}
+    .flash h2{margin:8px 0 12px}.flash p{color:var(--muted);max-width:520px;line-height:1.6}
+    .timer{display:flex;gap:10px;margin-top:25px}.time-box{min-width:75px;padding:13px 9px;border:1px solid var(--line);border-radius:15px;background:var(--surface-2);text-align:center}.time-box strong{display:block;font-size:1.55rem;font-family:"Space Grotesk"}.time-box span{font-size:.63rem;color:var(--muted);text-transform:uppercase;letter-spacing:.12em}
+    .flash-art{width:300px;height:300px;border-radius:28px;overflow:hidden;border:1px solid var(--line);transform:rotate(6deg);box-shadow:var(--shadow);position:relative}.flash-art img{width:100%;height:100%;object-fit:cover;transition:.5s}.flash:hover .flash-art img{transform:scale(1.06)}
+
+    /* story + testimonials */
+    .features{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.feature{padding:24px;border:1px solid var(--line);border-radius:20px;background:var(--surface);transition:.35s}.feature:hover{transform:translateY(-6px);background:var(--surface-2)}.feature-icon{width:43px;height:43px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(139,124,255,.22),rgba(94,231,255,.15));margin-bottom:20px}.feature h3{font-size:1.05rem;margin-bottom:8px}.feature p{color:var(--muted);line-height:1.6;font-size:.88rem}
+    .testimonial-shell{max-width:800px;margin:auto;text-align:center}.quote{font-family:"Space Grotesk";font-size:clamp(1.8rem,4vw,3.2rem);letter-spacing:-.045em;line-height:1.15;margin:22px 0 28px}.person{display:flex;justify-content:center;align-items:center;gap:11px}.person img{width:44px;height:44px;border-radius:50%;object-fit:cover}.person-meta{text-align:left}.person-meta strong{font-size:.84rem}.person-meta span{display:block;color:var(--muted);font-size:.72rem;margin-top:3px}.testimonial-controls{margin-top:26px;display:flex;gap:8px;justify-content:center}.testimonial-controls button{width:40px;height:40px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+
+    /* newsletter/footer */
+    .newsletter{padding:70px;text-align:center;border-radius:30px;border:1px solid var(--line);background:radial-gradient(circle at 50% 0%,rgba(139,124,255,.16),transparent 45%),var(--surface)}
+    .newsletter p{color:var(--muted);margin:14px auto 24px;line-height:1.6;max-width:520px}.subscribe{display:flex;max-width:520px;margin:auto;gap:8px}.subscribe input{flex:1;min-width:0;padding:14px 16px;border-radius:13px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);outline:none}.subscribe input:focus{border-color:var(--accent)}
+    footer{padding:80px 0 30px;border-top:1px solid var(--line);margin-top:100px}.footer-grid{display:grid;grid-template-columns:1.5fr repeat(4,1fr);gap:30px}.footer-brand p{color:var(--muted);max-width:310px;line-height:1.7;margin:16px 0}.socials{display:flex;gap:8px}.socials a{width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--line);border-radius:11px;color:var(--muted)}.socials a:hover{color:var(--text);background:var(--surface)}
+    footer h4{font-size:.75rem;text-transform:uppercase;letter-spacing:.14em;margin-bottom:18px;color:var(--muted)}.footer-links{display:grid;gap:11px}.footer-links a{font-size:.83rem;color:var(--muted)}.footer-links a:hover{color:var(--text)}
+    .footer-bottom{border-top:1px solid var(--line);margin-top:45px;padding-top:20px;display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:.72rem}.payments{display:flex;gap:6px}.pay{padding:6px 8px;border:1px solid var(--line);border-radius:7px}
+
+    /* overlays / drawers */
+    .overlay{position:fixed;inset:0;z-index:1300;background:rgba(0,0,0,.58);backdrop-filter:blur(14px);opacity:0;pointer-events:none;transition:.35s}.overlay.active{opacity:1;pointer-events:auto}
+    .modal{position:fixed;z-index:1400;inset:5vh 5vw;background:var(--bg2);border:1px solid var(--line);border-radius:30px;box-shadow:var(--shadow);opacity:0;pointer-events:none;transform:translateY(35px) scale(.96);transition:.45s cubic-bezier(.16,1,.3,1);overflow:auto}.modal.active{opacity:1;pointer-events:auto;transform:none}
+    .close{width:42px;height:42px;border:1px solid var(--line);border-radius:13px;background:var(--surface);display:grid;place-items:center;position:absolute;right:18px;top:18px;z-index:5}
+    .product-detail{display:grid;grid-template-columns:1.05fr .95fr;gap:34px;padding:28px;min-height:100%}.detail-gallery{min-height:600px;display:grid;grid-template-rows:1fr 84px;gap:12px}.detail-main{border-radius:24px;overflow:hidden;border:1px solid var(--line);background:var(--surface)}.detail-main img{width:100%;height:100%;object-fit:cover;cursor:zoom-in}.thumbs{display:flex;gap:10px;overflow:auto}.thumb{flex:0 0 76px;border:1px solid var(--line);border-radius:12px;overflow:hidden;opacity:.6}.thumb.active{opacity:1;border-color:var(--accent)}.thumb img{width:100%;height:100%;object-fit:cover}.detail-info{padding:45px 20px}.detail-info .product-name{font-size:clamp(2rem,4vw,4rem);white-space:normal}.detail-desc{color:var(--muted);line-height:1.7;margin:18px 0}.detail-price{font-size:1.7rem;font-weight:800;margin:18px 0}.options{display:grid;gap:14px;margin:22px 0}.option-group strong{font-size:.77rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);display:block;margin-bottom:8px}.option-list{display:flex;gap:7px;flex-wrap:wrap}.option{padding:8px 11px;border:1px solid var(--line);border-radius:10px}.option.active{border-color:var(--accent);background:rgba(139,124,255,.12)}.qty{display:flex;align-items:center;width:max-content;border:1px solid var(--line);border-radius:11px;overflow:hidden}.qty button{width:38px;height:40px}.qty span{min-width:35px;text-align:center}.detail-actions{display:flex;gap:9px;flex-wrap:wrap}.detail-actions .btn{flex:1;justify-content:center}
+    .drawer{position:fixed;right:0;top:0;bottom:0;width:min(460px,100%);z-index:1400;background:var(--bg2);border-left:1px solid var(--line);transform:translateX(102%);transition:.45s cubic-bezier(.16,1,.3,1);padding:25px;display:flex;flex-direction:column}.drawer.active{transform:none}.drawer-head{display:flex;justify-content:space-between;align-items:center;padding-bottom:18px;border-bottom:1px solid var(--line)}.drawer-head h3{font-size:1.3rem}.drawer-list{display:grid;gap:12px;overflow:auto;padding:16px 0;flex:1}.cart-item{display:grid;grid-template-columns:70px 1fr auto;gap:11px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:15px;background:var(--surface)}.cart-item img{width:70px;height:70px;border-radius:10px;object-fit:cover}.cart-item h4{font-size:.85rem}.cart-meta{color:var(--muted);font-size:.72rem;margin-top:5px}.cart-controls{display:flex;align-items:center;gap:4px;margin-top:8px}.cart-controls button{width:24px;height:24px;border:1px solid var(--line);border-radius:7px}.remove{font-size:.72rem;color:var(--danger);margin-top:5px}.drawer-total{border-top:1px solid var(--line);padding-top:16px}.total-row{display:flex;justify-content:space-between;margin-bottom:10px;color:var(--muted)}.total-row.final{color:var(--text);font-weight:800;font-size:1.07rem;margin-top:10px}.drawer-total .btn{width:100%;justify-content:center;margin-top:15px}
+    .search-panel{position:fixed;left:50%;top:90px;z-index:1400;width:min(850px,calc(100% - 30px));transform:translate(-50%,-20px) scale(.98);opacity:0;pointer-events:none;transition:.35s;background:var(--bg2);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:20px}.search-panel.active{transform:translate(-50%,0) scale(1);opacity:1;pointer-events:auto}.search-input-wrap{display:flex;align-items:center;gap:10px;border:1px solid var(--line);background:var(--surface);padding:3px 12px;border-radius:15px}.search-input{width:100%;border:0;outline:none;background:transparent;color:var(--text);padding:12px}.search-results{display:grid;gap:7px;max-height:480px;overflow:auto;margin-top:12px}.search-result{display:grid;grid-template-columns:54px 1fr auto;gap:10px;align-items:center;padding:9px;border:1px solid transparent;border-radius:13px}.search-result:hover{background:var(--surface);border-color:var(--line)}.search-result img{width:54px;height:54px;border-radius:9px;object-fit:cover}.search-result p{font-size:.82rem}.search-result span{display:block;color:var(--muted);font-size:.7rem;margin-top:4px}
+
+    /* cursor */
+    .cursor,.cursor-dot{position:fixed;pointer-events:none;z-index:2000;transform:translate(-50%,-50%);mix-blend-mode:difference}.cursor{width:32px;height:32px;border:1px solid #fff;border-radius:50%;transition:width .2s,height .2s,background .2s;opacity:.45}.cursor-dot{width:5px;height:5px;background:#fff}.cursor.hover{width:52px;height:52px;background:rgba(255,255,255,.08);opacity:.85}
+
+    /* extra discovery features */
+    .micro-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:28px 0}
+    .micro-stat{padding:18px;border:1px solid var(--line);border-radius:18px;background:var(--surface);text-align:center}
+    .micro-stat strong{display:block;font-family:"Space Grotesk";font-size:1.35rem}.micro-stat span{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.12em}
+    .smart-strip{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;margin:28px 0;padding:20px 22px;border:1px solid rgba(94,231,255,.18);border-radius:20px;background:linear-gradient(100deg,rgba(139,124,255,.08),rgba(94,231,255,.05))}
+    .smart-strip strong{font-family:"Space Grotesk";font-size:1.1rem}.smart-strip p{font-size:.78rem;color:var(--muted);margin-top:4px}
+    .compare-bar{position:fixed;left:50%;bottom:18px;transform:translate(-50%,120px);z-index:1250;max-width:min(760px,calc(100% - 24px));width:max-content;padding:11px 13px;border:1px solid var(--line);border-radius:17px;background:rgba(10,12,16,.85);backdrop-filter:blur(20px);box-shadow:var(--shadow);display:flex;align-items:center;gap:10px;transition:.4s}
+    [data-theme="light"] .compare-bar{background:rgba(255,255,255,.88)} .compare-bar.active{transform:translate(-50%,0)}
+    .compare-pill{padding:7px 9px;border:1px solid var(--line);border-radius:10px;font-size:.72rem;white-space:nowrap}
+    .compare-btn{padding:9px 12px;border-radius:10px;background:var(--text);color:var(--bg);font-weight:800;font-size:.72rem}
+    .compare-toggle{position:absolute;bottom:58px;right:10px;padding:6px 8px;border-radius:8px;background:rgba(0,0,0,.6);color:#fff;font-size:.62rem;opacity:0;transition:.25s}
+    .product-card:hover .compare-toggle{opacity:1}
+    .recent-row{display:flex;gap:12px;overflow:auto;padding-bottom:4px;scrollbar-width:none}.recent-row::-webkit-scrollbar{display:none}
+    .recent-item{min-width:175px;border:1px solid var(--line);border-radius:16px;background:var(--surface);padding:9px}.recent-item img{width:100%;aspect-ratio:1.15;border-radius:11px;object-fit:cover}.recent-item strong{display:block;font-size:.75rem;margin:9px 0 4px}.recent-item span{font-size:.7rem;color:var(--muted)}
+
+    /* mobile */
+    @media(max-width:1050px){.category-grid{grid-template-columns:repeat(3,1fr)}.product-grid{grid-template-columns:repeat(3,1fr)}.hero-content{grid-template-columns:1fr}.hero-stage{min-height:500px}.features{grid-template-columns:repeat(2,1fr)}.footer-grid{grid-template-columns:1.4fr repeat(2,1fr)}.slide{flex-basis:calc(33.333% - 11px)}}
+    @media(max-width:760px){
+      .container{width:min(var(--max),calc(100% - 24px))}.section{padding:74px 0}.nav-links{display:none}.hamburger{display:grid}.nav-actions .user-btn{display:none}
+      .nav.mobile-open .nav-links{display:grid;position:absolute;top:62px;left:12px;right:12px;background:var(--bg2);border:1px solid var(--line);border-radius:18px;padding:15px;box-shadow:var(--shadow)}.nav.mobile-open .nav-links a{padding:11px;border-radius:10px}.nav.mobile-open .nav-links a:hover{background:var(--surface)}
+      .hero{padding-top:142px}.hero-title{font-size:clamp(3.6rem,15vw,6rem)}.hero-stage{min-height:450px}.hero-product{inset:5% 4% 6%}.float-card.one{left:0}.float-card.two{right:0}.category-grid{grid-template-columns:repeat(2,1fr)}.category{height:220px}.product-grid{grid-template-columns:repeat(2,1fr);gap:10px}.product-info{padding:12px}.add-cart{font-size:.68rem;padding:8px}.quick{display:none}.section-head{align-items:start;flex-direction:column}.collection-grid{grid-template-columns:1fr}.collection-stack{grid-template-rows:repeat(2,210px)}.collection{min-height:390px}.flash{grid-template-columns:1fr;padding:30px}.flash-art{display:none}.newsletter{padding:35px 18px}.subscribe{flex-direction:column}.features{grid-template-columns:1fr 1fr}.footer-grid{grid-template-columns:1fr 1fr}.footer-brand{grid-column:1/-1}.footer-bottom{flex-direction:column}.modal{inset:0;border-radius:0}.product-detail{grid-template-columns:1fr;padding:18px}.detail-gallery{min-height:430px}.detail-info{padding:10px 5px 30px}.cursor,.cursor-dot{display:none}.search-panel{top:70px}.slide{flex-basis:78%}
+    }
+    @media(max-width:460px){.product-grid{grid-template-columns:1fr}.category-grid{grid-template-columns:1fr 1fr}.category{height:200px}.features{grid-template-columns:1fr}.timer{gap:5px}.time-box{min-width:58px}.time-box strong{font-size:1.18rem}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
+  </style>
+</head>
+<body>
+  <div class="progress" id="scrollProgress"></div>
+  <div class="announce"><span>FREE SHIPPING ON ORDERS OVER $100 • NEW COLLECTION AVAILABLE NOW • FREE SHIPPING ON ORDERS OVER $100</span></div>
+  <div class="noise"></div>
+
+  <header class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="#home" class="logo" aria-label="NEXORA home"><span class="logo-mark">N</span>NEXORA</a>
+      <nav class="nav-links" id="navLinks">
+        <a href="#home">Home</a><a href="#shop">Shop</a><a href="#collections">Collections</a><a href="#new">New Arrivals</a><a href="#about">About</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="icon-btn" id="searchBtn" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button>
+        <button class="icon-btn user-btn" id="wishlistBtn" aria-label="Wishlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.8 8.7c0 5.7-8.8 10.4-8.8 10.4S3.2 14.4 3.2 8.7A4.7 4.7 0 0 1 12 6.3a4.7 4.7 0 0 1 8.8 2.4Z"/></svg><span class="count" id="wishCount">0</span></button>
+        <button class="icon-btn" id="cartBtn" aria-label="Cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 7h12l1.2 13H4.8L6 7Z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg><span class="count" id="cartCount">0</span></button>
+        <button class="icon-btn" id="themeBtn" aria-label="Toggle theme"><svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.4 1.4m11.34 11.34 1.4 1.4M2 12h2m16 0h2M4.93 19.07l1.4-1.4M17.67 6.33l1.4-1.4"/></svg></button>
+        <button class="icon-btn hamburger" id="menuBtn" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero" id="home">
+      <div class="grid-bg"></div><div class="hero-glow" id="heroGlow"></div>
+      <div class="container hero-content">
+        <div class="hero-copy reveal">
+          <div class="eyebrow">NEXORA / 2026 COLLECTION</div>
+          <h1 class="hero-title">THE FUTURE<br><span>OF SHOPPING.</span></h1>
+          <p class="hero-sub">Premium products. Intelligent discovery. A better way to shop — crafted for people who expect more from every click.</p>
+          <div class="btn-row">
+            <a class="btn btn-primary magnetic" href="#shop">Shop Collection <span>↗</span></a>
+            <a class="btn btn-secondary magnetic" href="#collections">Explore Products <span>↓</span></a>
+          </div>
+        </div>
+        <div class="hero-stage reveal-right" id="heroStage">
+          <div class="hero-product" id="heroProduct">
+            <img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=1200&q=85" alt="Premium wireless headphones">
+          </div>
+          <div class="float-card one"><div class="mini">TRENDING NOW</div><strong>Aero X1 / $249</strong></div>
+          <div class="float-card two"><div class="mini">RATING</div><strong>★★★★★ 4.9 / 2.4k</strong></div>
+          <div class="float-card three"><div class="mini">NEXORA PICK</div><strong>Designed for tomorrow.</strong></div>
+        </div>
+      </div>
+      <div class="scroll-hint">SCROLL TO EXPLORE<div class="scroll-line"></div></div>
+    </section>
+
+    <!-- CATEGORIES -->
+    <section class="section" id="new">
+      <div class="container">
+        <div class="section-head reveal"><div><div class="eyebrow">01 / DISCOVER</div><h2>Shop by <span style="color:var(--muted)">world.</span></h2></div><p>Curated categories designed to help you move from “just browsing” to “exactly what I wanted.”</p></div>
+        <div class="category-grid" id="categoryGrid"></div>
+      </div>
+    </section>
+
+    <!-- SHOP -->
+    <section class="section" id="shop">
+      <div class="container">
+        <div class="section-head reveal"><div><div class="eyebrow">02 / FEATURED</div><h2>Products with <span style="color:var(--muted)">purpose.</span></h2></div><p>12 premium essentials. Real interactions, real filtering, real cart state — all powered by one HTML file.</p></div>
+        <div class="micro-stats reveal">
+          <div class="micro-stat"><strong>24+</strong><span>Curated Products</span></div>
+          <div class="micro-stat"><strong>4.8★</strong><span>Average Rating</span></div>
+          <div class="micro-stat"><strong>24/7</strong><span>Digital Support</span></div>
+          <div class="micro-stat"><strong>FREE</strong><span>Shipping $100+</span></div>
+        </div>
+        <div class="smart-strip reveal">
+          <div><strong>Smart discovery is on.</strong><p>Try category filters, instant search, quick view, wishlist, compare mode and saved cart state.</p></div>
+          <button class="btn btn-secondary" id="surpriseBtn">Surprise Me ✦</button>
+        </div>
+        <div class="shop-bar reveal">
+          <div class="filters" id="filters"></div>
+          <select class="select" id="sortSelect" aria-label="Sort products">
+            <option value="featured">Featured</option><option value="low">Price Low to High</option><option value="high">Price High to Low</option><option value="rating">Rating</option><option value="newest">Newest</option>
+          </select>
+        </div>
+        <div class="product-grid" id="productGrid"></div>
+      </div>
+    </section>
+
+    <!-- RECENTLY VIEWED -->
+    <section class="section" id="recentSection" style="padding-top:30px;display:none">
+      <div class="container">
+        <div class="section-head reveal"><div><div class="eyebrow">02.5 / YOUR TRAIL</div><h2>Recently <span style="color:var(--muted)">viewed.</span></h2></div><p>Your last discoveries stay close by in this browser.</p></div>
+        <div class="recent-row" id="recentRow"></div>
+      </div>
+    </section>
+
+    <!-- COLLECTIONS -->
+    <section class="section" id="collections">
+      <div class="container">
+        <div class="section-head reveal"><div><div class="eyebrow">03 / COLLECTIONS</div><h2>Curated for the <span style="color:var(--muted)">next.</span></h2></div><p>Big visual stories, quiet details and products that fit naturally into modern life.</p></div>
+        <div class="collection-grid">
+          <article class="collection reveal-left">
+            <img loading="lazy" src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1500&q=85" alt="Future Essentials watch">
+            <div class="collection-content"><div class="eyebrow" style="color:#fff">01 / FUTURE ESSENTIALS</div><h3>Future Essentials</h3><p>Smart objects, refined materials and timeless silhouettes for a faster world.</p><a class="btn btn-secondary" href="#shop">Explore Collection ↗</a></div>
+          </article>
+          <div class="collection-stack">
+            <article class="collection small reveal-right">
+              <img loading="lazy" src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=85" alt="Urban sneakers">
+              <div class="collection-content"><div class="eyebrow" style="color:#fff">02 / URBAN MOTION</div><h3>Urban Motion</h3><a class="btn btn-secondary" href="#shop">Shop Now ↗</a></div>
+            </article>
+            <article class="collection small reveal-right">
+              <img loading="lazy" src="https://images.unsplash.com/photo-1600269452121-4f2416e55c28?auto=format&fit=crop&w=1200&q=85" alt="Smart lifestyle">
+              <div class="collection-content"><div class="eyebrow" style="color:#fff">03 / SMART LIVING</div><h3>Smart Living</h3><a class="btn btn-secondary" href="#shop">Explore ↗</a></div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRENDING -->
+    <section class="section" id="trending">
+      <div class="container">
+        <div class="section-head reveal"><div><div class="eyebrow">04 / TRENDING</div><h2>Move with the <span style="color:var(--muted)">moment.</span></h2></div><div class="carousel-buttons"><button id="trendPrev" aria-label="Previous">←</button><button id="trendNext" aria-label="Next">→</button></div></div>
+        <div class="carousel-wrap"><div class="carousel" id="trendCarousel"></div></div>
+      </div>
+    </section>
+
+    <!-- FLASH SALE -->
+    <section class="section">
+      <div class="container">
+        <div class="flash reveal">
+          <div>
+            <div class="eyebrow">LIMITED TIME / FLASH SALE</div><h2>Up to 40% OFF.</h2><p>Iconic picks, special prices and a countdown that actually moves. Your window closes soon.</p>
+            <div class="timer">
+              <div class="time-box"><strong id="days">00</strong><span>Days</span></div><div class="time-box"><strong id="hours">00</strong><span>Hours</span></div><div class="time-box"><strong id="minutes">00</strong><span>Minutes</span></div><div class="time-box"><strong id="seconds">00</strong><span>Seconds</span></div>
+            </div>
+            <a class="btn btn-primary" href="#shop" style="margin-top:24px">Shop Sale ↗</a>
+          </div>
+          <div class="flash-art"><img loading="lazy" src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&w=1000&q=85" alt="Running shoes"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section" id="about">
+      <div class="container">
+        <div class="section-head reveal"><div><div class="eyebrow">05 / WHY NEXORA</div><h2>Better shopping,<br><span style="color:var(--muted)">by design.</span></h2></div><p>Every detail is built around clarity, confidence and the joy of discovering something unexpectedly right.</p></div>
+        <div class="features">
+          <article class="feature reveal"><div class="feature-icon">✦</div><h3>Premium Quality</h3><p>Products selected for materials, design and everyday durability.</p></article>
+          <article class="feature reveal"><div class="feature-icon">↗</div><h3>Fast Delivery</h3><p>Simple shipping, visible order details and fewer surprises.</p></article>
+          <article class="feature reveal"><div class="feature-icon">◈</div><h3>Secure Checkout</h3><p>A clean path from cart to confirmation with thoughtful UX.</p></article>
+          <article class="feature reveal"><div class="feature-icon">♡</div><h3>Customer First</h3><p>Helpful details, transparent pricing and support whenever you need it.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="section">
+      <div class="container reveal">
+        <div class="testimonial-shell">
+          <div class="eyebrow">06 / CUSTOMER STORIES</div>
+          <div class="quote" id="quote">“NEXORA feels like shopping got redesigned from the ground up — every interaction is fast, thoughtful and surprisingly fun.”</div>
+          <div class="person"><img id="personImg" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80" alt="Customer avatar"><div class="person-meta"><strong id="personName">Maya Chen</strong><span id="personMeta">Singapore · Verified customer · ★★★★★</span></div></div>
+          <div class="testimonial-controls"><button id="prevTest">←</button><button id="nextTest">→</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section class="section">
+      <div class="container">
+        <div class="newsletter reveal"><div class="eyebrow">THE NEXORA SIGNAL</div><h2>STAY AHEAD OF THE CURVE</h2><p>Get product drops, exclusive offers, and updates — only when they’re worth opening.</p>
+          <form class="subscribe" id="newsletterForm"><input id="emailInput" type="email" placeholder="you@example.com" aria-label="Email address" required><button class="btn btn-primary" type="submit">Subscribe ↗</button></form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="#home" class="logo"><span class="logo-mark">N</span>NEXORA</a><p>Discover. Shop. Experience. A premium e-commerce concept crafted for the future.</p><div class="socials"><a href="#" aria-label="Instagram">◎</a><a href="#" aria-label="X">𝕏</a><a href="#" aria-label="Facebook">f</a><a href="#" aria-label="YouTube">▶</a></div></div>
+        <div><h4>Shop</h4><div class="footer-links"><a href="#shop">All Products</a><a href="#new">New Arrivals</a><a href="#shop">Best Sellers</a><a href="#shop">Sale</a></div></div>
+        <div><h4>Company</h4><div class="footer-links"><a href="#about">About</a><a href="#about">Careers</a><a href="#about">Contact</a><a href="#collections">Our Story</a></div></div>
+        <div><h4>Support</h4><div class="footer-links"><a href="#">Help Center</a><a href="#">Shipping</a><a href="#">Returns</a><a href="#">FAQ</a></div></div>
+        <div><h4>Legal</h4><div class="footer-links"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Cookies</a></div></div>
+      </div>
+      <div class="footer-bottom"><span>© 2026 NEXORA. All rights reserved.</span><div class="payments"><span class="pay">VISA</span><span class="pay">MC</span><span class="pay">PAY</span><span class="pay">UPI</span></div></div>
+    </div>
+  </footer>
+
+  <div class="overlay" id="overlay"></div>
+
+  <!-- SEARCH -->
+  <section class="search-panel" id="searchPanel" aria-label="Search products">
+    <div class="search-input-wrap"><svg width="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input class="search-input" id="searchInput" type="search" placeholder="Search products, categories, brands…" autocomplete="off"><button id="closeSearch" aria-label="Close search">✕</button></div>
+    <div class="search-results" id="searchResults"></div>
+  </section>
+
+  <!-- PRODUCT MODAL -->
+  <section class="modal" id="productModal" aria-modal="true" aria-label="Product details">
+    <button class="close" id="closeProduct" aria-label="Close product details">✕</button>
+    <div class="product-detail" id="productDetail"></div>
+  </section>
+
+  <!-- CART DRAWER -->
+  <aside class="drawer" id="cartDrawer" aria-label="Shopping cart">
+    <div class="drawer-head"><h3>Your Cart</h3><button class="close" id="closeCart" style="position:static">✕</button></div>
+    <div class="drawer-list" id="cartList"></div>
+    <div class="drawer-total" id="cartTotal"></div>
+  </aside>
+
+  <!-- WISHLIST DRAWER -->
+  <aside class="drawer" id="wishDrawer" aria-label="Wishlist">
+    <div class="drawer-head"><h3>Your Wishlist</h3><button class="close" id="closeWish" style="position:static">✕</button></div>
+    <div class="drawer-list" id="wishList"></div>
+  </aside>
+
+  <div class="compare-bar" id="compareBar"><div id="comparePills"></div><button class="compare-btn" id="compareBtn">Compare</button><button class="icon-btn" id="clearCompare" aria-label="Clear comparison">✕</button></div>
+  <div class="modal" id="compareModal" aria-modal="true" aria-label="Compare products"><button class="close" id="closeCompare">✕</button><div style="padding:30px"><div class="eyebrow">PRODUCT LAB</div><h2 style="margin:10px 0 28px">Compare <span style="color:var(--muted)">side by side.</span></h2><div id="compareContent"></div></div></div>
+  <div class="toast-host" id="toastHost"></div>
+  <div class="cursor" id="cursor"></div><div class="cursor-dot" id="cursorDot"></div>
+
+  <script>
+    /* =========================
+       NEXORA — DATA
+    ========================== */
+    const IMG = (id,w=1000) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=84`;
+    const products = [
+      {id:1,name:"Aero X1 Headphones",category:"Electronics",price:249,oldPrice:299,rating:4.9,reviews:2410,image:IMG("photo-1546435770-a3e426bf472b"),description:"Immersive wireless audio with adaptive noise control, spatial sound and a precision aluminum frame.",colors:["Obsidian","Silver","Cloud"],sizes:["Standard"],badge:"BESTSELLER",newness:12},
+      {id:2,name:"Nova Smart Watch",category:"Watches",price:189,oldPrice:229,rating:4.8,reviews:1180,image:IMG("photo-1523275335684-37898b6baf30"),description:"A minimal smart watch built around health, focus and clean everyday information.",colors:["Midnight","Starlight"],sizes:["40mm","44mm"],badge:"NEW",newness:15},
+      {id:3,name:"Flux Pro Sneakers",category:"Sneakers",price:149,oldPrice:189,rating:4.7,reviews:930,image:IMG("photo-1542291026-7eec264c27ff"),description:"A lightweight performance sneaker with a sculpted sole and responsive everyday cushioning.",colors:["Volt","Stone","Black"],sizes:["40","41","42","43","44"],badge:"-21%",newness:10},
+      {id:4,name:"Vision Ultra Camera",category:"Electronics",price:699,oldPrice:799,rating:4.9,reviews:620,image:IMG("photo-1516035069371-29a1b244cc32"),description:"A compact creator camera with a cinematic sensor, crisp optics and a pocket-friendly body.",colors:["Black"],sizes:["Body"],badge:"PRO",newness:8},
+      {id:5,name:"Orbit Mechanical Keyboard",category:"Accessories",price:129,oldPrice:159,rating:4.8,reviews:1520,image:IMG("photo-1587829741301-dc798b83add3"),description:"Tactile mechanical keys, a low-profile aluminum deck and clean wireless connectivity.",colors:["Graphite","White"],sizes:["75%"],badge:"HOT",newness:7},
+      {id:6,name:"Pulse Wireless Earbuds",category:"Electronics",price:99,oldPrice:119,rating:4.6,reviews:2100,image:IMG("photo-1606220945770-b5b6c2c55bf1"),description:"Compact earbuds with punchy bass, adaptive noise reduction and a sleek pocket case.",colors:["Black","White"],sizes:["Standard"],badge:"-17%",newness:11},
+      {id:7,name:"Zenith Backpack",category:"Lifestyle",price:119,oldPrice:139,rating:4.7,reviews:710,image:IMG("photo-1553062407-98eeb64c6a62"),description:"An urban carry system with padded laptop protection, modular pockets and weather-resistant fabric.",colors:["Black","Olive"],sizes:["22L"],badge:"NEW",newness:13},
+      {id:8,name:"Titan Smart Glasses",category:"Electronics",price:299,oldPrice:349,rating:4.6,reviews:480,image:IMG("photo-1511499767150-a48a237f0083"),description:"Lightweight smart eyewear for notifications, calls and hands-free moments.",colors:["Smoke","Clear"],sizes:["One size"],badge:"TRENDING",newness:14},
+      {id:9,name:"Eclipse Jacket",category:"Fashion",price:219,oldPrice:279,rating:4.8,reviews:510,image:IMG("photo-1551028719-00167b16eac5"),description:"A modern technical jacket with clean lines, a soft inner layer and subtle weather protection.",colors:["Carbon","Sand"],sizes:["S","M","L","XL"],badge:"-21%",newness:6},
+      {id:10,name:"Nova Pro Tablet",category:"Electronics",price:649,oldPrice:749,rating:4.9,reviews:770,image:IMG("photo-1544244015-0df4b3ffc6b0"),description:"A precision tablet for creative work, study and media with a bright edge-to-edge display.",colors:["Space Gray","Silver"],sizes:["11-inch"],badge:"NEW",newness:16},
+      {id:11,name:"Velocity Running Shoes",category:"Sneakers",price:135,oldPrice:169,rating:4.8,reviews:1240,image:IMG("photo-1491553895911-0055eca6402d"),description:"Responsive running shoes designed to feel light, stable and energetic across daily miles.",colors:["White","Black","Blue"],sizes:["40","41","42","43","44"],badge:"-20%",newness:9},
+      {id:12,name:"Aura Desk Lamp",category:"Lifestyle",price:89,oldPrice:109,rating:4.7,reviews:830,image:IMG("photo-1507473885765-e6ed057f782c"),description:"A sculptural desk lamp with warm adaptive light and a minimalist aluminum silhouette.",colors:["Pearl","Graphite"],sizes:["Desk"],badge:"BESTSELLER",newness:5},
+      {id:13,name:"Apex Gaming Monitor",category:"Electronics",price:429,oldPrice:499,rating:4.8,reviews:690,image:IMG("photo-1527443224154-c4a3942d3acf"),description:"Ultra-smooth high refresh visuals with a sharp panel, thin bezels and a clean desk-first design.",colors:["Black"],sizes:["27-inch"],badge:"NEW",newness:18},
+      {id:14,name:"Vector Pro Laptop",category:"Electronics",price:1199,oldPrice:1399,rating:4.9,reviews:410,image:IMG("photo-1496181133206-80ce9b88a853"),description:"A premium portable workstation for creators, builders and students who need serious performance.",colors:["Silver","Midnight"],sizes:["14-inch"],badge:"PRO",newness:19},
+      {id:15,name:"Sonic Mini Speaker",category:"Electronics",price:79,oldPrice:99,rating:4.6,reviews:1440,image:IMG("photo-1608043152269-423dbba4e7e1"),description:"A compact wireless speaker with room-filling sound, tactile controls and all-day battery life.",colors:["Black","Cream","Blue"],sizes:["Mini"],badge:"HOT",newness:4},
+      {id:16,name:"Axiom Digital Camera",category:"Electronics",price:829,oldPrice:949,rating:4.8,reviews:335,image:IMG("photo-1510127034890-ba27508e9f1c"),description:"A creator-focused camera with a crisp sensor, manual controls and an iconic compact form.",colors:["Black"],sizes:["Body"],badge:"LIMITED",newness:17},
+      {id:17,name:"Studio Everyday Hoodie",category:"Fashion",price:89,oldPrice:119,rating:4.7,reviews:880,image:IMG("photo-1551488831-00ddcb6c6bd3"),description:"A heavyweight premium hoodie with a soft finish, relaxed fit and understated detailing.",colors:["Charcoal","Stone","Cream"],sizes:["S","M","L","XL"],badge:"-25%",newness:3},
+      {id:18,name:"Metro Crossbody",category:"Accessories",price:69,oldPrice:89,rating:4.7,reviews:620,image:IMG("photo-1548036328-c9fa89d128fa"),description:"A streamlined crossbody with hidden storage, durable fabric and a comfortable everyday fit.",colors:["Black","Olive"],sizes:["One size"],badge:"NEW",newness:20},
+      {id:19,name:"Chrono Steel Watch",category:"Watches",price:259,oldPrice:329,rating:4.8,reviews:530,image:IMG("photo-1524805444758-089113d48a6d"),description:"A polished steel watch with a clean dial and versatile profile for day-to-night wear.",colors:["Steel","Black"],sizes:["40mm"],badge:"-21%",newness:2},
+      {id:20,name:"Trail X Runner",category:"Sneakers",price:159,oldPrice:199,rating:4.8,reviews:970,image:IMG("photo-1460353581641-37baddab0fa2"),description:"A trail-ready runner with stable grip, responsive foam and a durable upper for mixed terrain.",colors:["Black","Sand","Orange"],sizes:["40","41","42","43","44"],badge:"TRENDING",newness:21},
+      {id:21,name:"Luma Ambient Light",category:"Lifestyle",price:109,oldPrice:139,rating:4.8,reviews:560,image:IMG("photo-1513506003901-1e6a229e2d15"),description:"Ambient smart lighting with warm scenes, subtle gradients and a sculptural tabletop silhouette.",colors:["White","Graphite"],sizes:["Desk"],badge:"NEW",newness:22},
+      {id:22,name:"Nimbus Travel Mug",category:"Lifestyle",price:39,oldPrice:49,rating:4.6,reviews:1760,image:IMG("photo-1513558161293-cdaf765ed2fd"),description:"A leak-resistant insulated travel mug designed to keep drinks hot or cold through busy days.",colors:["Black","Sand","Steel"],sizes:["450ml"],badge:"BESTSELLER",newness:1},
+      {id:23,name:"Arc Tablet Stand",category:"Accessories",price:59,oldPrice:74,rating:4.7,reviews:450,image:IMG("photo-1585790050230-5dd28404ccb9"),description:"An aluminum tablet stand that folds flat and creates a clean, ergonomic viewing angle.",colors:["Silver","Black"],sizes:["Universal"],badge:"-20%",newness:23},
+      {id:24,name:"Halo Fitness Band",category:"Watches",price:119,oldPrice:149,rating:4.6,reviews:980,image:IMG("photo-1557935728-e6d1eaabe558"),description:"A lightweight fitness tracker with smart reminders, activity insights and a minimalist display.",colors:["Black","Lavender"],sizes:["One size"],badge:"SMART",newness:24}
+    ];
+
+    const categories = [
+      ["Electronics","photo-1517336714739-489689fd1ca8"],["Fashion","photo-1483985988355-763728e1935b"],["Sneakers","photo-1542291026-7eec264c27ff"],
+      ["Watches","photo-1523275335684-37898b6baf30"],["Accessories","photo-1521572163474-6864f9cf17ab"],["Lifestyle","photo-1494438639946-1ebd1d20bf85"]
+    ];
+
+    let activeCategory = "All";
+    let cart = JSON.parse(localStorage.getItem("nexora-cart") || "[]");
+    let wishlist = JSON.parse(localStorage.getItem("nexora-wishlist") || "[]");
+    let currentProduct = null;
+    let compareList = JSON.parse(localStorage.getItem("nexora-compare") || "[]");
+    let recentViewed = JSON.parse(localStorage.getItem("nexora-recent") || "[]");
+    let detailQty = 1;
+    let detailColor = "";
+    let detailSize = "";
+
+    const $ = s => document.querySelector(s);
+    const $$ = s => [...document.querySelectorAll(s)];
+    const money = n => `$${n.toFixed(2)}`;
+
+    /* =========================
+       RENDER
+    ========================== */
+    function renderCategories(){
+      $("#categoryGrid").innerHTML = categories.map(([name,img]) => `
+        <article class="category reveal" data-cat="${name}">
+          <img loading="lazy" src="${IMG(img,900)}" alt="${name}">
+          <div class="category-content"><span>Explore</span><h3>${name}</h3><div class="arrow">↗</div></div>
+        </article>`).join("");
+      attachReveals($("#categoryGrid"));
+      $$(".category").forEach(el=>el.addEventListener("click",()=>{
+        activeCategory=el.dataset.cat; renderFilters(); renderProducts(); document.querySelector("#shop").scrollIntoView({behavior:"smooth"}); toast(`${activeCategory} selected`);
+      }));
+    }
+
+    function renderFilters(){
+      const cats=["All","Electronics","Fashion","Sneakers","Watches","Accessories","Lifestyle"];
+      $("#filters").innerHTML = cats.map(c=>`<button class="chip ${activeCategory===c?"active":""}" data-filter="${c}">${c}</button>`).join("");
+      $$(".chip").forEach(btn=>btn.addEventListener("click",()=>{activeCategory=btn.dataset.filter;renderFilters();renderProducts()}));
+    }
+
+    function filteredProducts(){
+      let list = products.filter(p=>activeCategory==="All" || p.category===activeCategory);
+      const sort=$("#sortSelect").value;
+      if(sort==="low") list.sort((a,b)=>a.price-b.price);
+      if(sort==="high") list.sort((a,b)=>b.price-a.price);
+      if(sort==="rating") list.sort((a,b)=>b.rating-a.rating);
+      if(sort==="newest") list.sort((a,b)=>b.newness-a.newness);
+      return list;
+    }
+
+    function card(p, slide=false){
+      const wished=wishlist.includes(p.id);
+      return `<article class="product-card ${slide?"slide":""} reveal" data-id="${p.id}">
+        <div class="product-media">
+          <img loading="lazy" src="${p.image}" alt="${p.name}" onerror="this.style.display='none'">
+          <span class="badge">${p.badge}</span>
+          <button class="heart ${wished?"active":""}" data-wish="${p.id}" aria-label="Wishlist ${p.name}">♥</button>
+          <button class="quick" data-quick="${p.id}">Quick view ↗</button>
+          <button class="compare-toggle" data-compare="${p.id}" aria-label="Compare ${p.name}">Compare</button>
+        </div>
+        <div class="product-info">
+          <div class="product-cat">${p.category}</div><h3 class="product-name">${p.name}</h3>
+          <div class="rating"><span class="stars">★★★★★</span><span>${p.rating} (${p.reviews.toLocaleString()})</span></div>
+          <div class="price-row"><div><span class="price">${money(p.price)}</span>${p.oldPrice?`<span class="old-price">${money(p.oldPrice)}</span>`:""}</div><button class="add-cart" data-cart="${p.id}">Add to Cart</button></div>
+        </div>
+      </article>`;
+    }
+
+    function renderProducts(){
+      const list=filteredProducts();
+      $("#productGrid").innerHTML=list.length ? list.map(p=>card(p)).join("") : `<div class="empty">No products match these filters.</div>`;
+      bindProductEvents($("#productGrid"));
+      attachReveals($("#productGrid"));
+    }
+
+    function renderTrending(){
+      const list=[products[1],products[2],products[4],products[6],products[9],products[10]];
+      $("#trendCarousel").innerHTML=list.map(p=>card(p,true)).join("");
+      bindProductEvents($("#trendCarousel")); attachReveals($("#trendCarousel"));
+    }
+
+    function bindProductEvents(root=document){
+      root.querySelectorAll("[data-cart]").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation(); addToCart(+b.dataset.cart)}));
+      root.querySelectorAll("[data-wish]").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();toggleWish(+b.dataset.wish)}));
+      root.querySelectorAll("[data-quick]").forEach(b=>b.addEventListener("click",()=>openProduct(+b.dataset.quick)));
+      root.querySelectorAll("[data-compare]").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();toggleCompare(+b.dataset.compare)}));
+      root.querySelectorAll(".product-card").forEach(c=>c.addEventListener("click",e=>{if(!e.target.closest("button"))openProduct(+c.dataset.id)}));
+    }
+
+    /* =========================
+       PRODUCT DETAIL
+    ========================== */
+    function saveExtra(){localStorage.setItem("nexora-compare",JSON.stringify(compareList));localStorage.setItem("nexora-recent",JSON.stringify(recentViewed))}
+    function toggleCompare(id){
+      if(compareList.includes(id)) compareList=compareList.filter(x=>x!==id);
+      else {
+        if(compareList.length>=3){toast("Compare up to 3 products at once.");return}
+        compareList.push(id);
+        toast("Added to comparison");
+      }
+      saveExtra();renderCompareBar();renderProducts();renderTrending();
+    }
+    function renderCompareBar(){
+      const bar=$("#compareBar"), pills=$("#comparePills");
+      pills.innerHTML=compareList.length?compareList.map(id=>{const p=products.find(x=>x.id===id);return `<span class="compare-pill">${p.name}</span>`}).join(""):`<span style="font-size:.72rem;color:var(--muted)">Select products to compare</span>`;
+      bar.classList.toggle("active",compareList.length>0);
+    }
+    function openCompare(){
+      if(compareList.length<2){toast("Select at least 2 products to compare.");return}
+      const list=compareList.map(id=>products.find(x=>x.id===id));
+      $("#compareContent").innerHTML=`<div style="overflow:auto"><table style="width:100%;border-collapse:collapse;min-width:620px"><tr><th style="text-align:left;padding:12px;border-bottom:1px solid var(--line)">Feature</th>${list.map(p=>`<th style="padding:12px;border-bottom:1px solid var(--line);text-align:left">${p.name}</th>`).join("")}</tr>
+        ${[
+          ["Image",p=>`<img src="${p.image}" alt="${p.name}" style="width:100px;height:100px;object-fit:cover;border-radius:14px">`],
+          ["Category",p=>p.category],["Price",p=>money(p.price)],["Old Price",p=>p.oldPrice?money(p.oldPrice):"—"],["Rating",p=>`★ ${p.rating}`],["Reviews",p=>p.reviews.toLocaleString()],["Badge",p=>p.badge],["Colors",p=>p.colors.join(", ")],["Sizes",p=>p.sizes.join(", ")]
+        ].map(([label,fn])=>`<tr><td style="padding:12px;border-bottom:1px solid var(--line);color:var(--muted)">${label}</td>${list.map(p=>`<td style="padding:12px;border-bottom:1px solid var(--line)">${fn(p)}</td>`).join("")}</tr>`).join("")}</table></div>`;
+      $("#overlay").classList.add("active");$("#compareModal").classList.add("active");document.body.classList.add("modal-open");
+    }
+    function renderRecent(){
+      if(!recentViewed.length){$("#recentSection").style.display="none";return}
+      $("#recentSection").style.display="block";
+      $("#recentRow").innerHTML=recentViewed.map(id=>products.find(p=>p.id===id)).filter(Boolean).map(p=>`<button class="recent-item" data-recent="${p.id}"><img loading="lazy" src="${p.image}" alt="${p.name}"><strong>${p.name}</strong><span>${money(p.price)} · ${p.category}</span></button>`).join("");
+      $$("[data-recent]").forEach(b=>b.addEventListener("click",()=>openProduct(+b.dataset.recent)));
+      attachReveals($("#recentSection"));
+    }
+
+    function openProduct(id){
+      const p=products.find(x=>x.id===id); if(!p)return;
+      currentProduct=p; detailQty=1; detailColor=p.colors[0]; detailSize=p.sizes[0];
+      recentViewed=[id,...recentViewed.filter(x=>x!==id)].slice(0,6); saveExtra(); renderRecent();
+      const gallery=[p.image,p.image+"&sat=-10",p.image+"&crop=faces",p.image+"&fit=crop"];
+      $("#productDetail").innerHTML=`
+        <div class="detail-gallery">
+          <div class="detail-main"><img id="detailMainImg" src="${gallery[0]}" alt="${p.name}"></div>
+          <div class="thumbs">${gallery.map((g,i)=>`<button class="thumb ${i===0?"active":""}" data-thumb="${g}"><img loading="lazy" src="${g}" alt="${p.name} view ${i+1}"></button>`).join("")}</div>
+        </div>
+        <div class="detail-info">
+          <div class="eyebrow">${p.badge} / ${p.category}</div><h2 class="product-name">${p.name}</h2>
+          <div class="rating"><span class="stars">★★★★★</span><span>${p.rating} · ${p.reviews.toLocaleString()} reviews</span></div>
+          <div class="detail-price">${money(p.price)} ${p.oldPrice?`<span class="old-price">${money(p.oldPrice)}</span>`:""}</div>
+          <p class="detail-desc">${p.description}</p>
+          <div class="options">
+            <div class="option-group"><strong>Color</strong><div class="option-list">${p.colors.map((c,i)=>`<button class="option ${i===0?"active":""}" data-color="${c}">${c}</button>`).join("")}</div></div>
+            <div class="option-group"><strong>Size</strong><div class="option-list">${p.sizes.map((s,i)=>`<button class="option ${i===0?"active":""}" data-size="${s}">${s}</button>`).join("")}</div></div>
+            <div class="option-group"><strong>Quantity</strong><div class="qty"><button id="detailMinus">−</button><span id="detailQty">1</span><button id="detailPlus">+</button></div></div>
+          </div>
+          <div class="detail-actions"><button class="btn btn-primary" id="detailAdd">Add to Cart <span>＋</span></button><button class="btn btn-secondary" id="detailBuy">Buy Now ↗</button><button class="btn btn-secondary" id="detailWish">♡ Wishlist</button></div>
+          <div style="margin-top:20px;color:var(--muted);font-size:.75rem;line-height:1.6">Free shipping on orders over $100 · 30-day returns · Secure checkout</div>
+        </div>`;
+      $("#overlay").classList.add("active"); $("#productModal").classList.add("active"); document.body.classList.add("modal-open");
+      $$(".thumb").forEach(t=>t.addEventListener("click",()=>{$$(".thumb").forEach(x=>x.classList.remove("active"));t.classList.add("active");$("#detailMainImg").src=t.dataset.thumb}));
+      $$("[data-color]").forEach(b=>b.addEventListener("click",()=>{$$("[data-color]").forEach(x=>x.classList.remove("active"));b.classList.add("active");detailColor=b.dataset.color}));
+      $$("[data-size]").forEach(b=>b.addEventListener("click",()=>{$$("[data-size]").forEach(x=>x.classList.remove("active"));b.classList.add("active");detailSize=b.dataset.size}));
+      $("#detailMinus").addEventListener("click",()=>{detailQty=Math.max(1,detailQty-1);$("#detailQty").textContent=detailQty});
+      $("#detailPlus").addEventListener("click",()=>{detailQty++;$("#detailQty").textContent=detailQty});
+      $("#detailAdd").addEventListener("click",()=>{addToCart(p.id,detailQty);closeOverlays()});
+      $("#detailWish").addEventListener("click",()=>toggleWish(p.id));
+      $("#detailBuy").addEventListener("click",()=>{addToCart(p.id,detailQty);closeOverlays();openCart()});
+    }
+    function closeProduct(){ $("#productModal").classList.remove("active"); $("#overlay").classList.remove("active"); document.body.classList.remove("modal-open"); }
+    function closeOverlays(){closeProduct();$("#cartDrawer").classList.remove("active");$("#wishDrawer").classList.remove("active");$("#searchPanel").classList.remove("active");}
+
+    /* =========================
+       CART + WISHLIST
+    ========================== */
+    function save(){localStorage.setItem("nexora-cart",JSON.stringify(cart));localStorage.setItem("nexora-wishlist",JSON.stringify(wishlist))}
+    function addToCart(id,qty=1){
+      const item=cart.find(x=>x.id===id); if(item)item.qty+=qty; else cart.push({id,qty});
+      save();renderCart();updateCounts();toast("Added to cart");
+      const cb=$("#cartBtn"); cb.animate([{transform:"scale(1)"},{transform:"scale(1.16)"},{transform:"scale(1)"}],{duration:420});
+    }
+    function changeQty(id,delta){const item=cart.find(x=>x.id===id);if(!item)return;item.qty+=delta;if(item.qty<=0)cart=cart.filter(x=>x.id!==id);save();renderCart();updateCounts()}
+    function removeCart(id){cart=cart.filter(x=>x.id!==id);save();renderCart();updateCounts();toast("Product removed")}
+    function cartTotals(){
+      const subtotal=cart.reduce((sum,i)=>{const p=products.find(x=>x.id===i.id);return sum+p.price*i.qty},0);
+      const shipping=subtotal===0?0:subtotal>=100?0:9; return {subtotal,shipping,total:subtotal+shipping};
+    }
+    function renderCart(){
+      $("#cartList").innerHTML=cart.length?cart.map(i=>{const p=products.find(x=>x.id===i.id);return `<div class="cart-item"><img src="${p.image}" alt="${p.name}"><div><h4>${p.name}</h4><div class="cart-meta">${money(p.price)} · ${p.category}</div><div class="cart-controls"><button data-cminus="${p.id}">−</button><span>${i.qty}</span><button data-cplus="${p.id}">+</button></div><button class="remove" data-remove="${p.id}">Remove</button></div><strong>${money(p.price*i.qty)}</strong></div>`}).join(""):`<div class="empty">Your cart is ready for its first discovery.</div>`;
+      const t=cartTotals();
+      $("#cartTotal").innerHTML=`<div class="total-row"><span>Subtotal</span><strong>${money(t.subtotal)}</strong></div><div class="total-row"><span>Shipping</span><strong>${t.shipping?money(t.shipping):"FREE"}</strong></div><div class="total-row final"><span>Total</span><strong>${money(t.total)}</strong></div><button class="btn btn-primary" id="checkoutBtn">Secure Checkout ↗</button>`;
+      $$("[data-cminus]").forEach(b=>b.addEventListener("click",()=>changeQty(+b.dataset.cminus,-1)));$$("[data-cplus]").forEach(b=>b.addEventListener("click",()=>changeQty(+b.dataset.cplus,1)));$$("[data-remove]").forEach(b=>b.addEventListener("click",()=>removeCart(+b.dataset.remove)));
+      $("#checkoutBtn").addEventListener("click",()=>toast(cart.length?"Demo checkout ready — connect your payment gateway here.":"Add a product first."));
+    }
+    function updateCounts(){$("#cartCount").textContent=cart.reduce((s,i)=>s+i.qty,0);$("#wishCount").textContent=wishlist.length}
+    function toggleWish(id){
+      wishlist.includes(id)?(wishlist=wishlist.filter(x=>x!==id),toast("Removed from wishlist")):(wishlist.push(id),toast("Added to wishlist"));
+      save();updateCounts();renderProducts();renderTrending();renderWish();
+      if(currentProduct && currentProduct.id===id) $("#detailWish").textContent=wishlist.includes(id)?"♥ Wishlisted":"♡ Wishlist";
+    }
+    function renderWish(){
+      $("#wishList").innerHTML=wishlist.length?wishlist.map(id=>{const p=products.find(x=>x.id===id);return `<div class="cart-item"><img src="${p.image}" alt="${p.name}"><div><h4>${p.name}</h4><div class="cart-meta">${money(p.price)} · ${p.category}</div><button class="remove" data-wremove="${p.id}">Remove</button></div><button class="btn btn-secondary" data-wcart="${p.id}" style="padding:8px">＋</button></div>`}).join(""):`<div class="empty">Your wishlist is waiting for something special.</div>`;
+      $$("[data-wremove]").forEach(b=>b.addEventListener("click",()=>toggleWish(+b.dataset.wremove)));$$("[data-wcart]").forEach(b=>b.addEventListener("click",()=>addToCart(+b.dataset.wcart)));
+    }
+    function openCart(){renderCart();$("#overlay").classList.add("active");$("#cartDrawer").classList.add("active")}
+    function openWish(){renderWish();$("#overlay").classList.add("active");$("#wishDrawer").classList.add("active")}
+    function closeDrawer(){ $("#overlay").classList.remove("active");$("#cartDrawer").classList.remove("active");$("#wishDrawer").classList.remove("active") }
+
+    /* =========================
+       SEARCH
+    ========================== */
+    function openSearch(){ $("#overlay").classList.add("active");$("#searchPanel").classList.add("active");$("#searchInput").focus();renderSearch("") }
+    function renderSearch(q){
+      const query=q.trim().toLowerCase();
+      const list=products.filter(p=>!query || [p.name,p.category,p.description].some(v=>v.toLowerCase().includes(query)));
+      $("#searchResults").innerHTML=list.length?list.map(p=>`<button class="search-result" data-search-id="${p.id}"><img loading="lazy" src="${p.image}" alt="${p.name}"><div><p>${p.name}</p><span>${p.category} · ${money(p.price)}</span></div><span>↗</span></button>`).join(""):`<div class="empty">No results for “${q}”. Try a category or product name.</div>`;
+      $$("[data-search-id]").forEach(b=>b.addEventListener("click",()=>{closeOverlays();openProduct(+b.dataset.searchId)}));
+    }
+
+    /* =========================
+       SCROLL + PARALLAX
+    ========================== */
+    function attachReveals(root=document){
+      const els=root.querySelectorAll?root.querySelectorAll(".reveal,.reveal-left,.reveal-right"):[];
+      const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add("revealed");observer.unobserve(entry.target)}}),{threshold:.12});
+      els.forEach(el=>observer.observe(el));
+    }
+    attachReveals(document);
+    function onScroll(){
+      const y=window.scrollY, max=document.documentElement.scrollHeight-innerHeight;
+      $("#scrollProgress").style.width=`${max>0?(y/max)*100:0}%`;
+      $("#nav").classList.toggle("scrolled",y>20);
+      if(window.matchMedia("(pointer:fine)").matches){
+        $$(".collection img,.hero-product").forEach(img=>{const r=img.getBoundingClientRect(),center=r.top+r.height/2;const d=(innerHeight/2-center)/innerHeight;img.style.transform=`translateY(${d*20}px) scale(${img.closest(".collection")?.matches(":hover")?"1.06":"1"})`});
+      }
+    }
+    window.addEventListener("scroll",onScroll,{passive:true}); onScroll();
+
+    let mouseX=innerWidth/2,mouseY=innerHeight/2;
+    window.addEventListener("pointermove",e=>{mouseX=e.clientX;mouseY=e.clientY;const rx=(e.clientX-innerWidth/2)/innerWidth,ry=(e.clientY-innerHeight/2)/innerHeight;$("#heroGlow").style.setProperty("--mx",`${rx*60}px`);$("#heroGlow").style.setProperty("--my",`${ry*40}px`);if(window.matchMedia("(pointer:fine)").matches){$("#heroProduct").style.transform=`rotateY(${-10+rx*8}deg) rotateX(${5-ry*7}deg)`}});
+
+    /* custom cursor + magnetic buttons */
+    const cursor=$("#cursor"),dot=$("#cursorDot");
+    window.addEventListener("pointermove",e=>{dot.style.left=e.clientX+"px";dot.style.top=e.clientY+"px";cursor.style.left=e.clientX+"px";cursor.style.top=e.clientY+"px"});
+    $$(".magnetic,a,button").forEach(el=>{el.addEventListener("mouseenter",()=>cursor.classList.add("hover"));el.addEventListener("mouseleave",()=>cursor.classList.remove("hover"))});
+
+    /* =========================
+       TREND CAROUSEL
+    ========================== */
+    $("#trendPrev").addEventListener("click",()=>$("#trendCarousel").scrollBy({left:-360,behavior:"smooth"}));
+    $("#trendNext").addEventListener("click",()=>$("#trendCarousel").scrollBy({left:360,behavior:"smooth"}));
+    let trendTimer=setInterval(()=>{const c=$("#trendCarousel");if(c.scrollLeft+c.clientWidth>=c.scrollWidth-10)c.scrollTo({left:0,behavior:"smooth"});else c.scrollBy({left:360,behavior:"smooth"})},4500);
+    $("#trendCarousel").addEventListener("mouseenter",()=>clearInterval(trendTimer));$("#trendCarousel").addEventListener("mouseleave",()=>trendTimer=setInterval(()=>$("#trendNext").click(),4500));
+
+    /* testimonials */
+    const testimonials=[
+      {quote:"“NEXORA feels like shopping got redesigned from the ground up — every interaction is fast, thoughtful and surprisingly fun.”",name:"Maya Chen",meta:"Singapore · Verified customer · ★★★★★",img:"photo-1494790108377-be9c29b29330"},
+      {quote:"“The product discovery is clean, the details are useful, and the checkout flow feels genuinely premium.”",name:"Ethan Brooks",meta:"New York · Verified customer · ★★★★★",img:"photo-1500648767791-00dcc994a43e"},
+      {quote:"“I came for the headphones and stayed for the design. NEXORA makes online shopping feel like a product experience.”",name:"Aarav Sharma",meta:"Kathmandu · Verified customer · ★★★★★",img:"photo-1507003211169-0a1dd7228f2d"}
+    ];
+    let testIndex=0;
+    function showTest(){const t=testimonials[testIndex];$("#quote").textContent=t.quote;$("#personName").textContent=t.name;$("#personMeta").textContent=t.meta;$("#personImg").src=IMG(t.img,200)}
+    $("#prevTest").addEventListener("click",()=>{testIndex=(testIndex-1+testimonials.length)%testimonials.length;showTest()});$("#nextTest").addEventListener("click",()=>{testIndex=(testIndex+1)%testimonials.length;showTest()});
+    setInterval(()=>{$("#nextTest").click()},6500);
+
+    /* countdown */
+    let saleEnd=+localStorage.getItem("nexora-sale-end") || (Date.now()+3*24*60*60*1000+7*60*60*1000);
+    localStorage.setItem("nexora-sale-end",saleEnd);
+    function countdown(){let ms=Math.max(0,saleEnd-Date.now());const d=Math.floor(ms/86400000);ms%=86400000;const h=Math.floor(ms/3600000);ms%=3600000;const m=Math.floor(ms/60000);const s=Math.floor(ms/1000)%60;$("#days").textContent=String(d).padStart(2,"0");$("#hours").textContent=String(h).padStart(2,"0");$("#minutes").textContent=String(m).padStart(2,"0");$("#seconds").textContent=String(s).padStart(2,"0")}countdown();setInterval(countdown,1000);
+
+    /* newsletter */
+    $("#newsletterForm").addEventListener("submit",e=>{e.preventDefault();const email=$("#emailInput").value.trim();if(!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)){toast("Enter a valid email address.");return}toast("You're on the NEXORA signal.");$("#emailInput").value=""});
+
+    /* theme */
+    const savedTheme=localStorage.getItem("nexora-theme") || (matchMedia("(prefers-color-scheme:light)").matches?"light":"dark");
+    document.documentElement.dataset.theme=savedTheme;
+    function setTheme(theme){document.documentElement.dataset.theme=theme;localStorage.setItem("nexora-theme",theme);$("#themeIcon").innerHTML=theme==="dark"?'<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.4 1.4m11.34 11.34 1.4 1.4M2 12h2m16 0h2M4.93 19.07l1.4-1.4M17.67 6.33l1.4-1.4"/>':'<path d="M20.5 15.3A8.5 8.5 0 0 1 8.7 3.5 8.5 8.5 0 1 0 20.5 15.3Z"/>'}
+    $("#themeBtn").addEventListener("click",()=>setTheme(document.documentElement.dataset.theme==="dark"?"light":"dark"));
+
+    /* overlays + nav */
+    $("#searchBtn").addEventListener("click",openSearch);$("#closeSearch").addEventListener("click",closeOverlays);
+    $("#searchInput").addEventListener("input",e=>renderSearch(e.target.value));$("#cartBtn").addEventListener("click",openCart);$("#wishlistBtn").addEventListener("click",openWish);
+    $("#closeCart").addEventListener("click",closeDrawer);$("#closeWish").addEventListener("click",closeDrawer);$("#closeProduct").addEventListener("click",closeProduct);$("#overlay").addEventListener("click",closeOverlays);
+    $("#menuBtn").addEventListener("click",()=>$("#nav").classList.toggle("mobile-open"));
+    $("#navLinks").addEventListener("click",()=>$("#nav").classList.remove("mobile-open"));
+    document.addEventListener("keydown",e=>{if(e.key==="Escape")closeOverlays();if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();openSearch()}});
+    $("#sortSelect").addEventListener("change",renderProducts);
+    $("#surpriseBtn").addEventListener("click",()=>{const p=products[Math.floor(Math.random()*products.length)];toast(`Try ${p.name}`);openProduct(p.id)});
+    $("#compareBtn").addEventListener("click",openCompare);
+    $("#clearCompare").addEventListener("click",()=>{compareList=[];saveExtra();renderCompareBar();renderProducts()});
+    $("#closeCompare").addEventListener("click",()=>{$("#compareModal").classList.remove("active");$("#overlay").classList.remove("active");document.body.classList.remove("modal-open")});
+
+    /* toasts */
+    function toast(message){
+      const host=$("#toastHost"); if(!host) return;
+      const t=document.createElement("div");t.style.cssText="position:fixed;right:18px;bottom:18px;z-index:1800;min-width:230px;padding:13px 15px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(14,16,21,.78);backdrop-filter:blur(18px);box-shadow:0 20px 50px rgba(0,0,0,.3);color:#fff;font-size:.82rem;transform:translateY(15px) scale(.98);opacity:0;transition:.35s cubic-bezier(.16,1,.3,1)";
+      t.textContent=message;host.appendChild(t);requestAnimationFrame(()=>{t.style.opacity="1";t.style.transform="none"});setTimeout(()=>{t.style.opacity="0";t.style.transform="translateY(10px) scale(.98)";setTimeout(()=>t.remove(),350)},2400);
+    }
+
+    /* initial render */
+    renderCategories();renderFilters();renderProducts();renderTrending();renderCart();renderWish();updateCounts();renderCompareBar();renderRecent();setTheme(savedTheme);
+  </script>
+</body>
+</html>
