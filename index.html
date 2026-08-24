@@ -36,6 +36,8 @@ footer{padding:80px 0 30px;border-top:1px solid var(--line);margin-top:100px}.fo
 @media(max-width:760px){.container{width:min(var(--max),calc(100% - 24px))}.section{padding:74px 0}.nav-links{display:none}.hamburger{display:grid}.hero{padding-top:142px}.hero-title{font-size:clamp(3.6rem,15vw,6rem)}.hero-stage{min-height:430px}.hero-product{inset:5% 4% 6%}.float-card.one{left:0}.float-card.two{right:0}.category-grid{grid-template-columns:repeat(2,1fr)}.category{height:220px}.product-grid{grid-template-columns:repeat(2,1fr);gap:10px}.quick{display:none}.compare-toggle{opacity:1}.section-head{align-items:start;flex-direction:column}.collection-grid{grid-template-columns:1fr}.collection-stack{grid-template-rows:repeat(2,210px)}.collection{min-height:390px}.flash{grid-template-columns:1fr;padding:30px}.flash-art{display:none}.newsletter{padding:35px 18px}.subscribe{flex-direction:column}.features{grid-template-columns:1fr 1fr}.footer-grid{grid-template-columns:1fr 1fr}.footer-brand{grid-column:1/-1}.footer-bottom{flex-direction:column}.modal{inset:0;border-radius:0}.product-detail{grid-template-columns:1fr;padding:18px}.detail-gallery{min-height:430px}.detail-info{padding:10px 5px 30px}.cursor,.cursor-dot{display:none}.search-panel{top:70px}.slide{flex-basis:78%}.micro-stats{grid-template-columns:1fr 1fr}.smart-strip{grid-template-columns:1fr}.compare-bar{width:calc(100% - 24px);overflow:auto}.compare-btn{margin-left:auto;flex:none}.checkout-grid{grid-template-columns:1fr}}
 @media(max-width:460px){.product-grid{grid-template-columns:1fr}.features{grid-template-columns:1fr}.timer{gap:5px}.time-box{min-width:58px}.time-box strong{font-size:1.18rem}.hero-stage{min-height:380px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
+
+.order-form{display:grid;gap:14px;margin-top:22px}.order-field{display:grid;gap:7px}.order-field label{font-size:.75rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.08em}.order-field input,.order-field textarea{width:100%;padding:14px 15px;border:1px solid var(--line);border-radius:13px;background:var(--surface);color:var(--text);outline:none}.order-field textarea{resize:vertical}.order-field input:focus,.order-field textarea:focus{border-color:var(--accent)}.order-submit{width:100%;justify-content:center;margin-top:4px}.order-summary{margin-top:18px;padding:15px;border:1px solid var(--line);border-radius:16px;background:var(--surface)}.order-summary-row{display:flex;justify-content:space-between;gap:14px;padding:7px 0;color:var(--muted)}.order-summary-row.total{border-top:1px solid var(--line);margin-top:7px;padding-top:12px;color:var(--text);font-weight:800}.config-note{padding:12px 14px;border:1px dashed var(--line);border-radius:13px;color:var(--muted);font-size:.75rem;line-height:1.6;margin-top:14px}
 </style>
 </head>
 <body>
@@ -58,15 +60,16 @@ footer{padding:80px 0 30px;border-top:1px solid var(--line);margin-top:100px}.fo
 <section class="section"><div class="container reveal"><div class="testimonial-shell"><div class="eyebrow">06 / CUSTOMER STORIES</div><div class="quote" id="quote">“NEXORA feels like shopping got redesigned from the ground up — every interaction is fast, thoughtful and surprisingly fun.”</div><div class="person"><img id="personImg" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80" alt="Customer avatar"><div class="person-meta"><strong id="personName">Maya Chen</strong><span id="personMeta">Singapore · Verified customer · ★★★★★</span></div></div><div class="testimonial-controls"><button id="prevTest" aria-label="Previous testimonial">←</button><button id="nextTest" aria-label="Next testimonial">→</button></div></div></div></section>
 <section class="section"><div class="container"><div class="newsletter reveal"><div class="eyebrow">THE NEXORA SIGNAL</div><h2>STAY AHEAD OF THE CURVE</h2><p>Get product drops, offers and updates — only when they are worth opening.</p><form class="subscribe" id="newsletterForm"><label class="sr-only" for="emailInput">Email</label><input id="emailInput" type="email" placeholder="you@example.com" autocomplete="email" required><button class="btn btn-primary">Subscribe ↗</button></form></div></div></section>
 </main>
-<footer><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="#home" class="logo"><span class="logo-mark">N</span>NEXORA</a><p>Discover. Shop. Experience. A premium e-commerce demo crafted for the future.</p><div class="socials"><a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">◎</a><a href="https://x.com/" target="_blank" rel="noopener" aria-label="X">𝕏</a><a href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="Facebook">f</a><a href="https://www.youtube.com/" target="_blank" rel="noopener" aria-label="YouTube">▶</a></div></div><div><h4>Shop</h4><div class="footer-links"><a href="#shop">All Products</a><a href="#new">New Arrivals</a><a href="#shop">Best Sellers</a><a href="#shop">Sale</a></div></div><div><h4>Company</h4><div class="footer-links"><a href="#about">About</a><a href="#about">Careers</a><a href="#about">Contact</a><a href="#collections">Our Story</a></div></div><div><h4>Support</h4><div class="footer-links"><a href="#" data-footer="Help Center">Help Center</a><a href="#" data-footer="Shipping">Shipping</a><a href="#" data-footer="Returns">Returns</a><a href="#" data-footer="FAQ">FAQ</a></div></div><div><h4>Legal</h4><div class="footer-links"><a href="#" data-footer="Privacy">Privacy</a><a href="#" data-footer="Terms">Terms</a><a href="#" data-footer="Cookies">Cookies</a></div></div></div><div class="footer-bottom"><span>© 2026 NEXORA. Demo storefront — no real orders are processed.</span><div class="payments"><span class="pay">VISA</span><span class="pay">MC</span><span class="pay">PAY</span><span class="pay">UPI</span></div></div></div></footer>
+<footer><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="#home" class="logo"><span class="logo-mark">N</span>NEXORA</a><p>Discover. Shop. Experience. A premium e-commerce demo crafted for the future.</p><div class="socials"><a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">◎</a><a href="https://x.com/" target="_blank" rel="noopener" aria-label="X">𝕏</a><a href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="Facebook">f</a><a href="https://www.youtube.com/" target="_blank" rel="noopener" aria-label="YouTube">▶</a></div></div><div><h4>Shop</h4><div class="footer-links"><a href="#shop">All Products</a><a href="#new">New Arrivals</a><a href="#shop">Best Sellers</a><a href="#shop">Sale</a></div></div><div><h4>Company</h4><div class="footer-links"><a href="#about">About</a><a href="#about">Careers</a><a href="#about">Contact</a><a href="#collections">Our Story</a></div></div><div><h4>Support</h4><div class="footer-links"><a href="#" data-footer="Help Center">Help Center</a><a href="#" data-footer="Shipping">Shipping</a><a href="#" data-footer="Returns">Returns</a><a href="#" data-footer="FAQ">FAQ</a></div></div><div><h4>Legal</h4><div class="footer-links"><a href="#" data-footer="Privacy">Privacy</a><a href="#" data-footer="Terms">Terms</a><a href="#" data-footer="Cookies">Cookies</a></div></div></div><div class="footer-bottom"><span>© 2026 NEXORA. Supabase-ready demo storefront — connect your project to record real orders.</span><div class="payments"><span class="pay">VISA</span><span class="pay">MC</span><span class="pay">PAY</span><span class="pay">UPI</span></div></div></div></footer>
 <div class="overlay" id="overlay"></div><section class="search-panel" id="searchPanel" aria-label="Search products"><div class="search-input-wrap"><svg width="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input class="search-input" id="searchInput" type="search" placeholder="Search products, categories…"><button id="closeSearch" aria-label="Close search">✕</button></div><div class="search-results" id="searchResults"></div></section>
 <section class="modal" id="productModal" aria-modal="true"><button class="close" id="closeProduct">✕</button><div class="product-detail" id="productDetail"></div></section>
 <aside class="drawer" id="cartDrawer"><div class="drawer-head"><h3>Your Cart</h3><button class="close" id="closeCart" style="position:static">✕</button></div><div class="drawer-list" id="cartList"></div><div class="drawer-total" id="cartTotal"></div></aside>
 <aside class="drawer" id="wishDrawer"><div class="drawer-head"><h3>Your Wishlist</h3><button class="close" id="closeWish" style="position:static">✕</button></div><div class="drawer-list" id="wishList"></div></aside>
 <div class="compare-bar" id="compareBar"><div class="compare-pills" id="comparePills"></div><button class="compare-btn" id="compareBtn">Compare</button><button class="icon-btn" id="clearCompare" aria-label="Clear compare">✕</button></div>
 <section class="modal" id="compareModal"><button class="close" id="closeCompare">✕</button><div style="padding:30px"><div class="eyebrow">PRODUCT LAB</div><h2 style="margin:10px 0 28px">Compare <span style="color:var(--muted)">side by side.</span></h2><div id="compareContent"></div></div></section>
-<section class="modal" id="checkoutModal"><button class="close" id="closeCheckout">✕</button><div class="checkout" id="checkoutContent"></div></section>
+<section class="modal" id="checkoutModal" aria-modal="true" aria-label="Place order"><button class="close" id="closeCheckout" aria-label="Close checkout">✕</button><div class="checkout" id="checkoutContent" style="padding:30px;max-width:760px;margin:auto"></div></section>
 <div class="toast-host" id="toastHost"></div><div class="cursor" id="cursor"></div><div class="cursor-dot" id="cursorDot"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const IMG=(id,w=1000)=>`https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=84`;
 const products=[
@@ -164,7 +167,79 @@ function renderSearch(q){const s=q.trim().toLowerCase();const list=products.filt
 function openLayer(sel){closeLayers(false);$('#overlay').classList.add('active');$(sel).classList.add('active');document.body.classList.add('lock')}
 function closeLayers(removeOverlay=true){['#productModal','#compareModal','#checkoutModal','#cartDrawer','#wishDrawer','#searchPanel'].forEach(s=>$(s).classList.remove('active'));if(removeOverlay)$('#overlay').classList.remove('active');document.body.classList.remove('lock')}
 function openCart(){renderCart();openLayer('#cartDrawer')}function openWish(){renderWish();openLayer('#wishDrawer')}
-function openCheckout(){const t=cartTotals();if(!state.cart.length){toast('Add a product first','bad');return}closeLayers(false);$('#checkoutContent').innerHTML=`<div class="eyebrow">DEMO ORDER / NEX-2026</div><h2 style="margin:10px 0 18px">Checkout <span style="color:var(--muted)">simulation.</span></h2><p style="color:var(--muted);line-height:1.6">Nothing is charged. This flow is designed for showcasing a premium front-end checkout experience.</p><div class="order-card"><div class="total-row"><span>Items</span><strong>${state.cart.reduce((a,x)=>a+x.qty,0)}</strong></div><div class="total-row"><span>Subtotal</span><strong>${money(t.subtotal)}</strong></div><div class="total-row"><span>Shipping</span><strong>${t.shipping?money(t.shipping):'FREE'}</strong></div><div class="total-row final"><span>Total</span><strong>${money(t.total)}</strong></div></div><form id="checkoutForm"><div class="checkout-grid" style="margin-top:18px"><div class="field"><label>Name</label><input required placeholder="Alex Morgan"></div><div class="field"><label>Email</label><input required type="email" placeholder="alex@example.com"></div><div class="field"><label>City</label><input required placeholder="Kathmandu"></div><div class="field"><label>Card ending</label><input required maxlength="4" inputmode="numeric" placeholder="4242"></div></div><button class="btn btn-primary" style="width:100%;margin-top:18px">Place Demo Order ↗</button></form>`;$('#checkoutModal').classList.add('active');$('#overlay').classList.add('active');document.body.classList.add('lock');$('#checkoutForm').onsubmit=e=>{e.preventDefault();const order='NEX-'+Date.now().toString().slice(-6);state.cart=[];save();renderCart();renderCounts();$('#checkoutContent').innerHTML=`<div class="success-box"><div class="success-icon">✓</div><div class="eyebrow">ORDER CONFIRMED</div><h2 style="margin:12px 0">You’re all set.</h2><p style="color:var(--muted);line-height:1.7">Demo order <strong>${order}</strong> has been created locally. No real payment was processed.</p><button class="btn btn-primary" id="doneBtn" style="margin-top:20px">Back to Store ↗</button></div>`;$('#doneBtn').onclick=()=>closeLayers()}}
+/* =========================
+   SUPABASE ORDER RECORDING
+   =========================
+   Replace the two placeholders below with your Supabase project values.
+   Use only your public/publishable key here. Never expose service_role/secret keys.
+*/
+const SUPABASE_URL = 'YOUR_SUPABASE_PROJECT_URL';
+const SUPABASE_PUBLISHABLE_KEY = 'YOUR_SUPABASE_PUBLISHABLE_KEY';
+const supabaseClient = (window.supabase && !SUPABASE_URL.includes('YOUR_') && !SUPABASE_PUBLISHABLE_KEY.includes('YOUR_'))
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
+  : null;
+
+function supabaseReady(){ return Boolean(supabaseClient); }
+
+function cartItemsSnapshot(){
+  return state.cart.map(item=>{
+    const p=products.find(x=>x.id===item.id);
+    if(!p) return null;
+    return {id:p.id,name:p.name,category:p.category,price:Number(p.price),qty:Number(item.qty)};
+  }).filter(Boolean);
+}
+
+function checkoutSummaryHtml(){
+  const items=cartItemsSnapshot(),t=cartTotals();
+  return `<div class="order-summary">${items.map(i=>`<div class="order-summary-row"><span>${i.name} × ${i.qty}</span><strong>${money(i.price*i.qty)}</strong></div>`).join('')}<div class="order-summary-row"><span>Shipping</span><strong>${t.shipping?money(t.shipping):'FREE'}</strong></div><div class="order-summary-row total"><span>Total</span><strong>${money(t.total)}</strong></div></div>`;
+}
+
+function openCheckout(){
+  if(!state.cart.length){toast('Add a product first','bad');return}
+  closeLayers(false);
+  const ready=supabaseReady();
+  $('#checkoutContent').innerHTML=`
+    <div class="eyebrow">NEXORA / ORDER</div>
+    <h2 style="margin:10px 0 10px">Complete your <span style="color:var(--muted)">order.</span></h2>
+    <p style="color:var(--muted);line-height:1.65">This checkout records the order in your Supabase database. No real payment is processed.</p>
+    ${checkoutSummaryHtml()}
+    <form id="checkoutForm" class="order-form">
+      <div class="order-field"><label for="customerName">Full name</label><input id="customerName" required autocomplete="name" placeholder="Your full name"></div>
+      <div class="order-field"><label for="customerEmail">Email</label><input id="customerEmail" required type="email" autocomplete="email" placeholder="you@example.com"></div>
+      <div class="order-field"><label for="customerPhone">Phone</label><input id="customerPhone" type="tel" autocomplete="tel" placeholder="98XXXXXXXX"></div>
+      <div class="order-field"><label for="customerAddress">Delivery address</label><textarea id="customerAddress" required rows="4" autocomplete="street-address" placeholder="Street, city, country"></textarea></div>
+      <div class="config-note">${ready ? '✓ Supabase is configured. Your order can be recorded.' : 'Supabase is not configured yet. Add your project URL and publishable key in the JavaScript before deploying.'}</div>
+      <button class="btn btn-primary order-submit" id="placeOrderBtn" type="submit" ${ready?'':'disabled'}>${ready?'Place Order ↗':'Configure Supabase First'}</button>
+    </form>`;
+  $('#checkoutModal').classList.add('active');$('#overlay').classList.add('active');document.body.classList.add('lock');
+  $('#checkoutForm').onsubmit=submitSupabaseOrder;
+}
+
+async function submitSupabaseOrder(event){
+  event.preventDefault();
+  if(!supabaseReady()){toast('Supabase is not configured yet','bad');return}
+  const name=$('#customerName').value.trim();
+  const email=$('#customerEmail').value.trim();
+  const phone=$('#customerPhone').value.trim();
+  const address=$('#customerAddress').value.trim();
+  if(name.length<2){toast('Enter your full name','bad');return}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){toast('Enter a valid email address','bad');return}
+  if(address.length<5){toast('Enter a delivery address','bad');return}
+  const items=cartItemsSnapshot(); if(!items.length){toast('Your cart is empty','bad');closeLayers();return}
+  const totals=cartTotals();
+  const btn=$('#placeOrderBtn');btn.disabled=true;btn.textContent='Saving order...';
+  try{
+    const {data:order,error:orderError}=await supabaseClient.from('orders').insert({customer_name:name,email,phone:phone||null,address,total:Number(totals.total.toFixed(2)),status:'pending'}).select('id').single();
+    if(orderError) throw orderError;
+    const orderItems=items.map(i=>({order_id:order.id,product_id:i.id,product_name:i.name,quantity:i.qty,price:i.price}));
+    const {error:itemError}=await supabaseClient.from('order_items').insert(orderItems);
+    if(itemError){await supabaseClient.from('orders').delete().eq('id',order.id);throw itemError}
+    state.cart=[];save();renderCart();renderCounts();
+    $('#checkoutContent').innerHTML=`<div class="success-box"><div class="success-icon">✓</div><div class="eyebrow">ORDER SAVED</div><h2 style="margin:12px 0 8px">Thank you, ${name.split(' ')[0]||'customer'}.</h2><p style="color:var(--muted);line-height:1.7">Your order has been recorded successfully.</p><div class="order-summary"><div class="order-summary-row"><span>Order ID</span><strong>NEX-${String(order.id).slice(0,8).toUpperCase()}</strong></div><div class="order-summary-row total"><span>Total</span><strong>${money(totals.total)}</strong></div></div><button class="btn btn-primary order-submit" id="doneOrder">Back to Store ↗</button></div>`;
+    $('#doneOrder').onclick=()=>closeLayers();
+  }catch(err){console.error('Supabase order error:',err);toast('Could not save the order. Check your Supabase table and RLS policies.','bad');btn.disabled=false;btn.textContent='Place Order ↗'}
+}
+
 const testimonials=[['“NEXORA feels like shopping got redesigned from the ground up — every interaction is fast, thoughtful and surprisingly fun.”','Maya Chen','Singapore · Verified customer · ★★★★★','photo-1494790108377-be9c29b29330'],['“The product discovery is clean, the details are useful, and the checkout flow feels genuinely premium.”','Ethan Brooks','New York · Verified customer · ★★★★★','photo-1500648767791-00dcc994a43e'],['“I came for the headphones and stayed for the design. NEXORA makes online shopping feel like a product experience.”','Aarav Sharma','Kathmandu · Verified customer · ★★★★★','photo-1507003211169-0a1dd7228f2d']];let ti=0;function showTest(){const t=testimonials[ti];$('#quote').textContent=t[0];$('#personName').textContent=t[1];$('#personMeta').textContent=t[2];$('#personImg').src=IMG(t[3],200)}$('#prevTest').onclick=()=>{ti=(ti-1+testimonials.length)%testimonials.length;showTest()};$('#nextTest').onclick=()=>{ti=(ti+1)%testimonials.length;showTest()};setInterval(()=>$('#nextTest').click(),6500);
 function saleStart(){const key='nexora-sale-end';let end=Number(localStorage.getItem(key)),now=Date.now();if(!Number.isFinite(end)||end<=now){end=now+72*3600000+7*3600000;localStorage.setItem(key,String(end))}return end}let saleEnd=saleStart();function countdown(){let ms=saleEnd-Date.now();if(ms<=0){saleEnd=saleStart();ms=saleEnd-Date.now()}let d=Math.floor(ms/86400000);ms%=86400000;let h=Math.floor(ms/3600000);ms%=3600000;let m=Math.floor(ms/60000);let s=Math.floor(ms/1000)%60;$('#days').textContent=String(d).padStart(2,'0');$('#hours').textContent=String(h).padStart(2,'0');$('#minutes').textContent=String(m).padStart(2,'0');$('#seconds').textContent=String(s).padStart(2,'0')}countdown();setInterval(countdown,1000);
 function setTheme(theme){document.documentElement.dataset.theme=theme;localStorage.setItem('nexora-theme',theme);$('#themeIcon').innerHTML=theme==='dark'?'<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.4 1.4m11.34 11.34 1.4 1.4M2 12h2m16 0h2M4.93 19.07l1.4-1.4M17.67 6.33l1.4-1.4"/>':'<path d="M20.5 15.3A8.5 8.5 0 1 1 8.7 3.5 8.5 8.5 0 0 0 20.5 15.3Z"/>'}
@@ -176,5 +251,7 @@ window.addEventListener('scroll',()=>{const max=document.documentElement.scrollH
 window.addEventListener('pointermove',e=>{if(!matchMedia('(pointer:fine)').matches)return;const rx=(e.clientX-innerWidth/2)/innerWidth,ry=(e.clientY-innerHeight/2)/innerHeight;$('#heroGlow').style.setProperty('--mx',`${rx*60}px`);$('#heroGlow').style.setProperty('--my',`${ry*40}px`);$('#heroProduct').style.transform=`rotateY(${-10+rx*8}deg) rotateX(${5-ry*7}deg)`;$('#cursorDot').style.left=e.clientX+'px';$('#cursorDot').style.top=e.clientY+'px';$('#cursor').style.left=e.clientX+'px';$('#cursor').style.top=e.clientY+'px'});const cursor=$('#cursor');$$('a,button,.category,.product-card').forEach(el=>{el.onmouseenter=()=>cursor.classList.add('hover');el.onmouseleave=()=>cursor.classList.remove('hover')});
 renderCategories();renderFilters();renderProducts();renderTrending();renderCart();renderWish();renderCounts();renderCompareBar();renderRecent();showTest();reveal();
 </script>
+
+-->
 </body>
 </html>
